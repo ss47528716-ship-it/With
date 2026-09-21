@@ -167,17 +167,175 @@
 #modal .sheet .notice,#modal .sheet .locstatus{position:static!important;display:block!important}
 body.with-modal-open{overflow:hidden!important;touch-action:none}
 </style>
+
+<style id="with-handwritten-headings">
+/* Reference-inspired chunky handwritten display type.
+   Only major logo/banner/page headings change; body/UI copy stays readable. */
+.head h1,
+#home .banner h2,
+.content > .title,
+.sheet h3{
+  font-family:"Comic Sans MS","Arial Rounded MT Bold","Trebuchet MS","Noto Sans KR",sans-serif!important;
+  font-weight:900!important;
+  font-style:normal!important;
+  letter-spacing:-0.075em!important;
+  line-height:.98!important;
+  color:#11130f!important;
+  -webkit-text-stroke:.25px #11130f;
+}
+.head h1{
+  font-size:45px!important;
+  letter-spacing:-.09em!important;
+}
+#home .banner h2{
+  font-size:25px!important;
+  line-height:1.02!important;
+  margin-bottom:8px!important;
+}
+.content > .title{
+  font-size:32px!important;
+  line-height:1!important;
+  margin-bottom:20px!important;
+}
+.sheet h3{font-size:27px!important}
+@media(max-width:360px){
+  .head h1{font-size:42px!important}
+  #home .banner h2{font-size:23px!important}
+  .content > .title{font-size:30px!important}
+}
+</style>
+
+
+<style id="with-banner-cleanup">
+/* Remove the decorative icon at the upper-left of each of the four home banners. */
+#home .banner > .icon,
+#home .banner > .banner-icon,
+#home .banner > [class*="icon"]:first-child,
+#home .banner > img:first-child,
+#home .banner > svg:first-child{
+  display:none!important;
+}
+/* Make the four banner titles substantially larger. */
+#home .banner h2{
+  font-size:34px!important;
+  line-height:.96!important;
+  letter-spacing:-.08em!important;
+  margin-top:0!important;
+}
+@media(max-width:380px){
+  #home .banner h2{font-size:31px!important;}
+}
+</style>
+
+
+<style id="with-header-match-banner">
+/* Larger top WITH logo */
+.head h1{
+  font-size:58px!important;
+  line-height:.9!important;
+  letter-spacing:-.095em!important;
+}
+
+/* Match the entire top logo/hero area to the same apple-green used by the feature banners */
+.head{
+  background:#BDF44A!important;
+}
+
+/* Keep the rounded bottom edge visually continuous */
+.head::before,
+.head::after{
+  background:#BDF44A!important;
+}
+
+@media(max-width:380px){
+  .head h1{font-size:54px!important;}
+}
+</style>
+
+
+<style id="with-header-button-green">
+.head,.head::before,.head::after{
+  background:#B7F43B!important;
+}
+</style>
+
+
+<style id="with-header-no-border">
+/* Remove the dividing/boundary line around the top WITH logo area */
+.head,
+.head::before,
+.head::after{
+  border:0!important;
+  border-bottom:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+</style>
+
+
+<style id="with-header-no-color">
+/* Remove all special color from the top WITH logo area */
+.head,
+.head::before,
+.head::after{
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+</style>
+
+
+<style id="with-header-no-mascot">
+/* Remove only the mascot/image from the top WITH header */
+.head img,
+.head .mascot,
+.head [class*="mascot"]{
+  display:none!important;
+}
+</style>
+
+
+<style id="with-logo-bigger-centered">
+.head{
+  text-align:center!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.head h1{
+  font-size:72px!important;
+  line-height:.88!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  text-align:center!important;
+  width:100%!important;
+}
+.head .eyebrow,
+.head .sub,
+.head p{
+  text-align:center!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+@media(max-width:380px){
+  .head h1{font-size:66px!important;}
+}
+</style>
+
 </head><body><div class="app">
 <div class="head"><div class="brandrow"><div class="brandcopy"><small>WELCOME TO KOREA</small><h1>WITH</h1><p>Your companion in Korea.</p></div><div class="mascot" aria-label="WITH mascot"><span class="mascot-bag"></span></div></div></div>
-<div class="hotel" onclick="editHotel()"><b>⌖ Stay</b><span id="hotelText">Tap to set your hotel</span><span style="margin-left:auto;color:#a0a5ad">›</span></div>
-<section id="home" class="content"><button class="banner route" onclick="go('route')"><span class="icon">🧭</span><h2>Find my way</h2><p>Open a real route to your destination.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop map">↗</i></span></button><button class="banner near" onclick="go('cats')"><span class="icon">📍</span><h2>Nearby places</h2><p>Find useful places around your hotel.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop pin">⌖</i></span></button><button class="banner language" onclick="go('language')"><span class="icon">💬</span><h2>Translate to Korean</h2><p>Type what you want to say and translate it into Korean.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop talk">안녕</i></span></button><button class="banner emergency" onclick="go('emergency')"><span class="icon">🚨</span><h2>Emergency Help</h2><p>Police, ambulance and essential help in Korea.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop phone">!</i></span></button></section>
+
+<section id="home" class="content"><button class="banner route" onclick="go('route')"><span class="icon">🧭</span><h2>Find my way</h2><p>Open a real route to your destination.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop map">↗</i></span></button><button class="banner near" onclick="go('cats')"><span class="icon">📍</span><h2>Nearby places</h2><p>Find useful places around your current location.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop pin">⌖</i></span></button><button class="banner language" onclick="go('language')"><span class="icon">💬</span><h2>Translate to Korean</h2><p>Type what you want to say and translate it into Korean.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop talk">안녕</i></span></button><button class="banner emergency" onclick="go('emergency')"><span class="icon">🚨</span><h2>Emergency Help</h2><p>Police, ambulance and essential help in Korea.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop phone">!</i></span></button></section>
 <section id="route" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Find my way</div><button class="secondary" onclick="useCurrentLocation()">◎ Use my current location</button><div id="locStatus" class="locstatus">Or use your saved hotel as the starting point.</div><div style="height:14px"></div><div class="acwrap"><input id="dest" autocomplete="off" placeholder="Where do you want to go?"><div id="destSuggest" class="suggest"></div></div><button class="primary" onclick="route()">Open route</button><div id="routeout"></div></section>
-<section id="cats" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Nearby places</div><div class="cats"><button class="cat" data-icon="food" onclick="places('restaurant')"><span>🍜</span>Restaurants</button><button class="cat" data-icon="cafe" onclick="places('cafe')"><span>☕</span>Cafes</button><button class="cat" data-icon="attraction" onclick="places('tourist attraction')"><span>🏛️</span>Attractions</button><button class="cat" data-icon="store" onclick="places('convenience store')"><span>🏪</span>Convenience stores</button><button class="cat" data-icon="pharmacy" onclick="places('pharmacy')"><span>💊</span>Pharmacies</button><button class="cat" data-icon="atm" onclick="places('ATM')"><span>🏧</span>ATMs</button><button class="cat" data-icon="shopping" onclick="places('shopping mall')"><span>🛍️</span>Shopping malls</button><button class="cat" data-icon="market" onclick="places('supermarket')"><span>🛒</span>Supermarkets</button><button class="cat" data-icon="restroom" onclick="places('public restroom')"><span>🚻</span>Restrooms</button><button class="cat" data-icon="exchange" onclick="places('currency exchange')"><span>💱</span>Currency exchange</button><button class="cat" data-icon="luggage" onclick="places('luggage storage')"><span>🧳</span>Luggage storage</button><button class="cat" data-icon="hospital" onclick="places('hospital')"><span>🏥</span>Hospitals</button></div></section>
+<section id="cats" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Nearby places</div><button class="secondary" onclick="useCurrentForNearby()">◎ Use my current location</button><div id="nearLocStatus" class="locstatus">Choose current location, then select a category below.</div><div class="cats"><button class="cat" data-icon="food" onclick="places('restaurant')"><span>🍜</span>Restaurants</button><button class="cat" data-icon="cafe" onclick="places('cafe')"><span>☕</span>Cafes</button><button class="cat" data-icon="attraction" onclick="places('tourist attraction')"><span>🏛️</span>Attractions</button><button class="cat" data-icon="store" onclick="places('convenience store')"><span>🏪</span>Convenience stores</button><button class="cat" data-icon="pharmacy" onclick="places('pharmacy')"><span>💊</span>Pharmacies</button><button class="cat" data-icon="atm" onclick="places('ATM')"><span>🏧</span>ATMs</button><button class="cat" data-icon="shopping" onclick="places('shopping mall')"><span>🛍️</span>Shopping malls</button><button class="cat" data-icon="market" onclick="places('supermarket')"><span>🛒</span>Supermarkets</button><button class="cat" data-icon="restroom" onclick="places('public restroom')"><span>🚻</span>Restrooms</button><button class="cat" data-icon="exchange" onclick="places('currency exchange')"><span>💱</span>Currency exchange</button><button class="cat" data-icon="luggage" onclick="places('luggage storage')"><span>🧳</span>Luggage storage</button><button class="cat" data-icon="hospital" onclick="places('hospital')"><span>🏥</span>Hospitals</button></div></section>
 <section id="language" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Translate to Korean</div><div class="notice" style="margin:0 0 14px">Enter text in your language. The Korean translation appears below.</div><textarea id="translateInput" placeholder="Type what you want to say..." style="width:100%;min-height:140px;padding:15px;border:1px solid #ddd;border-radius:12px;font:inherit;resize:vertical"></textarea><button class="primary" id="translateBtn" onclick="translateToKorean()">Translate to Korean</button><div id="translationResult" style="display:none;margin-top:14px;padding:18px;background:#f5f7fb;border-radius:14px"><div style="font-size:12px;color:#777;margin-bottom:7px">KOREAN</div><div id="translatedText" style="font-size:32px;font-weight:700;line-height:1.45;word-break:keep-all;letter-spacing:-.02em;padding:6px 0"></div><div style="margin-top:16px"><button class="back" style="margin:0;width:100%;padding:13px" onclick="speakTranslation()">🔊 Listen</button></div></div><div id="translationError" class="notice" style="display:none;margin-top:12px"></div></section>
 <section id="emergency" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Emergency Help</div><div class="emergency-card"><b>🚓 Police — 112</b><p>For crime, danger, theft or urgent police assistance.</p><button class="secondary" onclick="location.href='tel:112'">Call 112</button></div><div class="emergency-card"><b>🚑 Fire & Ambulance — 119</b><p>For medical emergencies, ambulance or fire.</p><button class="secondary" onclick="location.href='tel:119'">Call 119</button></div><div class="emergency-card"><b>🌏 Tourist Hotline — 1330</b><p>Korea Travel Hotline for travel assistance and interpretation.</p><button class="secondary" onclick="location.href='tel:1330'">Call 1330</button></div><button class="primary" onclick="places('hospital')">Find a nearby hospital</button></section>
 <section id="places" class="content" style="display:none"><button class="back" onclick="go('cats')">← Back</button><div class="title" id="ptitle"></div><div id="plist"></div></section>
 </div><div id="modal" class="modal"><div class="sheet"><h3>Set your starting place</h3><button class="secondary" onclick="useCurrentAsHotel()">◎ Use my current location</button><div id="hotelLocStatus" class="locstatus">Allow location access to use where you are now.</div><div style="height:12px"></div><div class="acwrap"><input id="hotelInput" autocomplete="off" placeholder="Search hotel name or address"><div id="hotelSuggest" class="suggest"></div></div><div class="notice">Type a hotel, motel, guesthouse or address. Common stays are suggested here; live Korea-wide accommodation search will use a place-search API in the deployed version.</div><button class="primary" onclick="saveHotel()">Save hotel</button><button class="secondary" onclick="closeModal()">Cancel</button><div class="notice">Your hotel is stored only in this browser.</div></div></div>
-<script>let hotel=localStorage.getItem('kh_hotel')||'';let currentPos=null;const hotelText=document.getElementById('hotelText');function sync(){hotelText.textContent=hotel||'Tap to set your hotel'}sync();function go(id){document.querySelectorAll('section').forEach(x=>x.style.display='none');document.getElementById(id).style.display='block';scrollTo(0,0)}function editHotel(){hotelInput.value=hotel;modal.style.display='flex';document.body.classList.add('with-modal-open');setTimeout(()=>hotelInput.focus(),120)}function closeModal(){modal.style.display='none';document.body.classList.remove('with-modal-open')}function saveHotel(){hotel=hotelInput.value.trim();if(!hotel)return;localStorage.setItem('kh_hotel',hotel);sync();closeModal()}function enc(x){return encodeURIComponent(x)}async function requestGeo(el,onSuccess){
+<script>let hotel=localStorage.getItem('kh_hotel')||'';let currentPos=null;const hotelText=document.getElementById('hotelText');function sync(){if(hotelText)hotelText.textContent=hotel||'Tap to set your hotel'}sync();function go(id){document.querySelectorAll('section').forEach(x=>x.style.display='none');document.getElementById(id).style.display='block';scrollTo(0,0)}function editHotel(){hotelInput.value=hotel;modal.style.display='flex';document.body.classList.add('with-modal-open');setTimeout(()=>hotelInput.focus(),120)}function closeModal(){modal.style.display='none';document.body.classList.remove('with-modal-open')}function saveHotel(){hotel=hotelInput.value.trim();if(!hotel)return;localStorage.setItem('kh_hotel',hotel);sync();closeModal()}function enc(x){return encodeURIComponent(x)}async function requestGeo(el,onSuccess){
  if(!window.isSecureContext){el.textContent='Location permission only works on HTTPS (or localhost). Open the deployed HTTPS app and try again.';return}
  if(!('geolocation' in navigator)){el.textContent='Location is not supported by this browser.';return}
  el.textContent='Requesting location permission…';
@@ -197,7 +355,8 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
 }
 function useCurrentLocation(){const el=document.getElementById('locStatus');requestGeo(el,()=>{el.textContent='✓ Current location will be used as your starting point.'})}
 function useCurrentAsHotel(){const el=document.getElementById('hotelLocStatus');requestGeo(el,pos=>{hotel='Current location';localStorage.setItem('kh_hotel',hotel);localStorage.setItem('kh_hotel_coords',JSON.stringify(pos));hotelInput.value='Current location';sync();el.textContent='✓ Current location saved. You can use it as your starting point.'})}
-function route(){const d=dest.value.trim();if(!d){dest.focus();return}const origin=currentPos?`&origin=${currentPos.lat},${currentPos.lng}`:(hotel?`&origin=${enc(hotel)}`:'');const url=`https://www.google.com/maps/dir/?api=1&destination=${enc(d)}${origin}&travelmode=transit`;routeout.innerHTML=`<div class="summary"><b>Route ready</b><br><span>${currentPos?'From current location':(hotel?'From '+hotel:'From current location')} → ${d}</span></div><button class="primary" onclick="location.href='${url}'">Open in Google Maps</button><div class="notice">Transit availability depends on the map provider. For Korea, local map apps may provide more detailed transit data.</div>`}async function places(q){
+function route(){const d=dest.value.trim();if(!d){dest.focus();return}const origin=currentPos?`&origin=${currentPos.lat},${currentPos.lng}`:(hotel?`&origin=${enc(hotel)}`:'');const url=`https://www.google.com/maps/dir/?api=1&destination=${enc(d)}${origin}&travelmode=transit`;routeout.innerHTML=`<div class="summary"><b>Route ready</b><br><span>${currentPos?'From current location':(hotel?'From '+hotel:'From current location')} → ${d}</span></div><button class="primary" onclick="location.href='${url}'">Open in Google Maps</button><div class="notice">Transit availability depends on the map provider. For Korea, local map apps may provide more detailed transit data.</div>`}function useCurrentForNearby(){const el=document.getElementById('nearLocStatus');requestGeo(el,pos=>{currentPos=pos;el.textContent='✓ Current location ready. Choose a category below.'})}
+async function places(q){
  go('places'); ptitle.textContent=q[0].toUpperCase()+q.slice(1)+'s nearby';
  plist.innerHTML=`<div class="summary"><b>Finding your location…</b><br><span>Please allow location access.</span></div>`;
  const show=(pos)=>{
