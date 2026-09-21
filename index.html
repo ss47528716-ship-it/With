@@ -355,7 +355,42 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
 }
 function useCurrentLocation(){const el=document.getElementById('locStatus');requestGeo(el,()=>{el.textContent='✓ Current location will be used as your starting point.'})}
 function useCurrentAsHotel(){const el=document.getElementById('hotelLocStatus');requestGeo(el,pos=>{hotel='Current location';localStorage.setItem('kh_hotel',hotel);localStorage.setItem('kh_hotel_coords',JSON.stringify(pos));hotelInput.value='Current location';sync();el.textContent='✓ Current location saved. You can use it as your starting point.'})}
-function route(){const d=dest.value.trim();if(!d){dest.focus();return}const origin=currentPos?`&origin=${currentPos.lat},${currentPos.lng}`:(hotel?`&origin=${enc(hotel)}`:'');const url=`https://www.google.com/maps/dir/?api=1&destination=${enc(d)}${origin}&travelmode=transit`;routeout.innerHTML=`<div class="summary"><b>Route ready</b><br><span>${currentPos?'From current location':(hotel?'From '+hotel:'From current location')} → ${d}</span></div><button class="primary" onclick="location.href='${url}'">Open in Google Maps</button><div class="notice">Transit availability depends on the map provider. For Korea, local map apps may provide more detailed transit data.</div>`}function useCurrentForNearby(){const el=document.getElementById('nearLocStatus');requestGeo(el,pos=>{currentPos=pos;el.textContent='✓ Current location ready. Choose a category below.'})}
+function route(){const d=dest.value.trim();if(!d){dest.focus();return}const origin=currentPos?`&origin=${currentPos.lat},${currentPos.lng}`:(hotel?`&origin=${enc(hotel)}`:'');const url=`https://www.google.com/maps/dir/?api=1&destination=${enc(d)}${origin}&travelmode=transit`;routeout.innerHTML=`<div class="summary"><b>Route ready</b><br><span>${currentPos?'From current location':(hotel?'From '+hotel:'From current location')} → ${d}</span></div><button class="primary" onclick="location.href='${url}'">Open in Google Maps</button><div class="notice">Transit availability depends on the map provider. For Korea, local map apps may provide more detailed transit data.</div>`}function useCurrentForNearby(){
+ const el=document.getElementById('nearLocStatus');
+ const btn=document.querySelector('#cats button.secondary');
+ if(btn){btn.disabled=true;btn.textContent='◎ Finding my location…';}
+ if(!window.isSecureContext){
+   el.textContent='Location requires HTTPS. Open the deployed WITH website and try again.';
+   if(btn){btn.disabled=false;btn.textContent='◎ Use my current location';}
+   return;
+ }
+ if(!navigator.geolocation){
+   el.textContent='Location is not supported by this browser.';
+   if(btn){btn.disabled=false;btn.textContent='◎ Use my current location';}
+   return;
+ }
+ el.textContent='Finding your current location…';
+ const done=(p)=>{
+   currentPos={lat:p.coords.latitude,lng:p.coords.longitude};
+   localStorage.setItem('kh_nearby_coords',JSON.stringify(currentPos));
+   el.textContent='✓ Current location ready. Choose a category below.';
+   if(btn){btn.disabled=false;btn.textContent='✓ Current location selected';}
+ };
+ const fail=(e)=>{
+   if(e.code===1) el.textContent='Location is blocked. Allow Location for this site in your browser settings, then tap again.';
+   else if(e.code===2) el.textContent='Could not determine your location. Turn on phone Location/GPS and try again.';
+   else if(e.code===3) el.textContent='Location took too long. Please tap again.';
+   else el.textContent='Could not access your current location.';
+   if(btn){btn.disabled=false;btn.textContent='◎ Use my current location';}
+ };
+ // Fast network/GPS fix first. This works more reliably on mobile browsers.
+ navigator.geolocation.getCurrentPosition(done,(e)=>{
+   // Retry once with high accuracy when the first lookup fails/times out.
+   if(e.code===2||e.code===3){
+     navigator.geolocation.getCurrentPosition(done,fail,{enableHighAccuracy:true,timeout:20000,maximumAge:0});
+   } else fail(e);
+ },{enableHighAccuracy:false,timeout:10000,maximumAge:60000});
+}
 async function places(q){
  go('places'); ptitle.textContent=q[0].toUpperCase()+q.slice(1)+'s nearby';
  plist.innerHTML=`<div class="summary"><b>Finding your location…</b><br><span>Please allow location access.</span></div>`;
