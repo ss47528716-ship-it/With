@@ -335,67 +335,30 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
 <section id="emergency" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Emergency Help</div><div class="emergency-card"><b>🚓 Police — 112</b><p>For crime, danger, theft or urgent police assistance.</p><button class="secondary" onclick="location.href='tel:112'">Call 112</button></div><div class="emergency-card"><b>🚑 Fire & Ambulance — 119</b><p>For medical emergencies, ambulance or fire.</p><button class="secondary" onclick="location.href='tel:119'">Call 119</button></div><div class="emergency-card"><b>🌏 Tourist Hotline — 1330</b><p>Korea Travel Hotline for travel assistance and interpretation.</p><button class="secondary" onclick="location.href='tel:1330'">Call 1330</button></div><button class="primary" onclick="places('hospital')">Find a nearby hospital</button></section>
 <section id="places" class="content" style="display:none"><button class="back" onclick="go('cats')">← Back</button><div class="title" id="ptitle"></div><div id="plist"></div></section>
 </div><div id="modal" class="modal"><div class="sheet"><h3>Set your starting place</h3><button class="secondary" onclick="useCurrentAsHotel()">◎ Use my current location</button><div id="hotelLocStatus" class="locstatus">Allow location access to use where you are now.</div><div style="height:12px"></div><div class="acwrap"><input id="hotelInput" autocomplete="off" placeholder="Search hotel name or address"><div id="hotelSuggest" class="suggest"></div></div><div class="notice">Type a hotel, motel, guesthouse or address. Common stays are suggested here; live Korea-wide accommodation search will use a place-search API in the deployed version.</div><button class="primary" onclick="saveHotel()">Save hotel</button><button class="secondary" onclick="closeModal()">Cancel</button><div class="notice">Your hotel is stored only in this browser.</div></div></div>
-<script>let hotel=localStorage.getItem('kh_hotel')||'';let currentPos=null;const hotelText=document.getElementById('hotelText');function sync(){if(hotelText)hotelText.textContent=hotel||'Tap to set your hotel'}sync();function go(id){document.querySelectorAll('section').forEach(x=>x.style.display='none');document.getElementById(id).style.display='block';scrollTo(0,0)}function editHotel(){hotelInput.value=hotel;modal.style.display='flex';document.body.classList.add('with-modal-open');setTimeout(()=>hotelInput.focus(),120)}function closeModal(){modal.style.display='none';document.body.classList.remove('with-modal-open')}function saveHotel(){hotel=hotelInput.value.trim();if(!hotel)return;localStorage.setItem('kh_hotel',hotel);sync();closeModal()}function enc(x){return encodeURIComponent(x)}async function requestGeo(el,onSuccess){
- if(!window.isSecureContext){el.textContent='Location permission only works on HTTPS (or localhost). Open the deployed HTTPS app and try again.';return}
- if(!('geolocation' in navigator)){el.textContent='Location is not supported by this browser.';return}
- el.textContent='Requesting location permission…';
- try{
-  if(navigator.permissions&&navigator.permissions.query){
-   const ps=await navigator.permissions.query({name:'geolocation'}).catch(()=>null);
-   if(ps&&ps.state==='denied'){el.textContent='Location is blocked for this site. Open browser site settings → Location → Allow, then try again.';return}
-  }
- }catch(_){}
- navigator.geolocation.getCurrentPosition(p=>{currentPos={lat:p.coords.latitude,lng:p.coords.longitude};onSuccess(currentPos);},e=>{
-  currentPos=null;
-  if(e.code===1) el.textContent='Location permission was denied or blocked. In your browser, open this site’s permissions and set Location to Allow, then tap again.';
-  else if(e.code===2) el.textContent='Your device could not determine its location. Turn on device Location/GPS and try again.';
-  else if(e.code===3) el.textContent='Location request timed out. Turn on GPS and try again.';
-  else el.textContent='Could not access your current location.';
- },{enableHighAccuracy:true,timeout:15000,maximumAge:0});
-}
-function useCurrentLocation(){const el=document.getElementById('locStatus');requestGeo(el,()=>{el.textContent='✓ Current location will be used as your starting point.'})}
-function useCurrentAsHotel(){const el=document.getElementById('hotelLocStatus');requestGeo(el,pos=>{hotel='Current location';localStorage.setItem('kh_hotel',hotel);localStorage.setItem('kh_hotel_coords',JSON.stringify(pos));hotelInput.value='Current location';sync();el.textContent='✓ Current location saved. You can use it as your starting point.'})}
-function route(){const d=dest.value.trim();if(!d){dest.focus();return}const origin=currentPos?`&origin=${currentPos.lat},${currentPos.lng}`:(hotel?`&origin=${enc(hotel)}`:'');const url=`https://www.google.com/maps/dir/?api=1&destination=${enc(d)}${origin}&travelmode=transit`;routeout.innerHTML=`<div class="summary"><b>Route ready</b><br><span>${currentPos?'From current location':(hotel?'From '+hotel:'From current location')} → ${d}</span></div><button class="primary" onclick="location.href='${url}'">Open in Google Maps</button><div class="notice">Transit availability depends on the map provider. For Korea, local map apps may provide more detailed transit data.</div>`}function useCurrentForNearby(){
- const el=document.getElementById('nearLocStatus');
- const btn=document.querySelector('#cats button.secondary');
- if(btn){btn.disabled=true;btn.textContent='◎ Finding my location…';}
- if(!window.isSecureContext){
-   el.textContent='Location requires HTTPS. Open the deployed WITH website and try again.';
-   if(btn){btn.disabled=false;btn.textContent='◎ Use my current location';}
-   return;
- }
- if(!navigator.geolocation){
-   el.textContent='Location is not supported by this browser.';
-   if(btn){btn.disabled=false;btn.textContent='◎ Use my current location';}
-   return;
- }
+<script>let hotel=localStorage.getItem('kh_hotel')||'';let currentPos=null;const hotelText=document.getElementById('hotelText');function sync(){if(hotelText)hotelText.textContent=hotel||'Tap to set your hotel'}sync();function go(id){document.querySelectorAll('section').forEach(x=>x.style.display='none');document.getElementById(id).style.display='block';scrollTo(0,0)}function editHotel(){hotelInput.value=hotel;modal.style.display='flex';document.body.classList.add('with-modal-open');setTimeout(()=>hotelInput.focus(),120)}function closeModal(){modal.style.display='none';document.body.classList.remove('with-modal-open')}function saveHotel(){hotel=hotelInput.value.trim();if(!hotel)return;localStorage.setItem('kh_hotel',hotel);sync();closeModal()}function enc(x){return encodeURIComponent(x)}function requestGeo(el,onSuccess){
  el.textContent='Finding your current location…';
- const done=(p)=>{
-   currentPos={lat:p.coords.latitude,lng:p.coords.longitude};
-   localStorage.setItem('kh_nearby_coords',JSON.stringify(currentPos));
-   el.textContent='✓ Current location ready. Choose a category below.';
-   if(btn){btn.disabled=false;btn.textContent='✓ Current location selected';}
- };
- const fail=(e)=>{
-   if(e.code===1) el.textContent='Location is blocked. Allow Location for this site in your browser settings, then tap again.';
-   else if(e.code===2) el.textContent='Could not determine your location. Turn on phone Location/GPS and try again.';
-   else if(e.code===3) el.textContent='Location took too long. Please tap again.';
-   else el.textContent='Could not access your current location.';
-   if(btn){btn.disabled=false;btn.textContent='◎ Use my current location';}
- };
- // Fast network/GPS fix first. This works more reliably on mobile browsers.
- navigator.geolocation.getCurrentPosition(done,(e)=>{
-   // Retry once with high accuracy when the first lookup fails/times out.
-   if(e.code===2||e.code===3){
-     navigator.geolocation.getCurrentPosition(done,fail,{enableHighAccuracy:true,timeout:20000,maximumAge:0});
-   } else fail(e);
- },{enableHighAccuracy:false,timeout:10000,maximumAge:60000});
+ if(window.isSecureContext && navigator.geolocation){
+  navigator.geolocation.getCurrentPosition(
+   p=>{currentPos={lat:p.coords.latitude,lng:p.coords.longitude};onSuccess(currentPos);},
+   e=>{currentPos={mapsCurrent:true};onSuccess(currentPos);},
+   {enableHighAccuracy:false,timeout:8000,maximumAge:120000}
+  );
+ }else{currentPos={mapsCurrent:true};onSuccess(currentPos);}
+}
+function useCurrentLocation(){
+ const el=document.getElementById('locStatus');
+ requestGeo(el,()=>{el.textContent='✓ Current location selected.'});
+}
+function useCurrentAsHotel(){const el=document.getElementById('hotelLocStatus');requestGeo(el,pos=>{hotel='Current location';localStorage.setItem('kh_hotel',hotel);localStorage.setItem('kh_hotel_coords',JSON.stringify(pos));hotelInput.value='Current location';sync();el.textContent='✓ Current location saved. You can use it as your starting point.'})}
+function route(){const d=dest.value.trim();if(!d){dest.focus();return}const origin=(currentPos&&Number.isFinite(currentPos.lat))?`&origin=${currentPos.lat},${currentPos.lng}`:((currentPos&&currentPos.mapsCurrent)?'':(hotel?`&origin=${enc(hotel)}`:''));const url=`https://www.google.com/maps/dir/?api=1&destination=${enc(d)}${origin}&travelmode=transit`;routeout.innerHTML=`<div class="summary"><b>Route ready</b><br><span>${currentPos?'From current location':(hotel?'From '+hotel:'From current location')} → ${d}</span></div><button class="primary" onclick="location.href='${url}'">Open in Google Maps</button><div class="notice">Transit availability depends on the map provider. For Korea, local map apps may provide more detailed transit data.</div>`}function useCurrentForNearby(){
+ const el=document.getElementById('nearLocStatus');
+ requestGeo(el,()=>{el.textContent='✓ Current location selected. Choose a category below.'});
 }
 async function places(q){
  go('places'); ptitle.textContent=q[0].toUpperCase()+q.slice(1)+'s nearby';
  plist.innerHTML=`<div class="summary"><b>Finding your location…</b><br><span>Please allow location access.</span></div>`;
  const show=(pos)=>{
-   const hasPos=!!pos;
+   const hasPos=!!(pos&&Number.isFinite(pos.lat)&&Number.isFinite(pos.lng));
    const base=hasPos?`${pos.lat},${pos.lng}`:(hotel&&hotel!=='Current location'?hotel:'near me');
    const url=`https://www.google.com/maps/search/?api=1&query=${enc(q)}${hasPos?`&center=${pos.lat},${pos.lng}`:''}`;
    const fallback=`https://www.google.com/maps/search/?api=1&query=${enc(q+' near '+base)}`;
