@@ -740,6 +740,36 @@ attachAutocomplete(document.getElementById('hotelInput'),document.getElementById
 
 
 
+
+<script id="with-nearby-banner-fix">
+(function(){
+ function showNearby(){
+   try{
+     if(typeof show==='function'){ show('cats'); return; }
+   }catch(e){}
+   try{
+     if(typeof go==='function'){ go('cats'); return; }
+   }catch(e){}
+   var target=document.getElementById('cats');
+   if(target){
+     document.querySelectorAll('.screen').forEach(function(x){x.classList.remove('active')});
+     target.classList.add('active');
+     window.scrollTo(0,0);
+   }
+ }
+ document.addEventListener('click',function(e){
+   var el=e.target.closest('button,a,.banner,.home-card,.feature-card,[role="button"]');
+   if(!el) return;
+   var txt=(el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+   if(txt.indexOf('nearby places')!==-1){
+     e.preventDefault();
+     e.stopPropagation();
+     showNearby();
+   }
+ },true);
+})();
+</script>
+
 </body></html>
 <style>
 /* v21 — use the approved illustrated WITH mascot asset */
