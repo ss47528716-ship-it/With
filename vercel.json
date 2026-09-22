@@ -1,4 +1,44 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false
+  "rewrites": [
+    {
+      "source": "/H001",
+      "destination": "/H001/index.html"
+    },
+    {
+      "source": "/H002",
+      "destination": "/H002/index.html"
+    },
+    {
+      "source": "/H003",
+      "destination": "/H003/index.html"
+    },
+    {
+      "source": "/H004",
+      "destination": "/H004/index.html"
+    },
+    {
+      "source": "/H005",
+      "destination": "/H005/index.html"
+    },
+    {
+      "source": "/H001/",
+      "destination": "/H001/index.html"
+    },
+    {
+      "source": "/H002/",
+      "destination": "/H002/index.html"
+    },
+    {
+      "source": "/H003/",
+      "destination": "/H003/index.html"
+    },
+    {
+      "source": "/H004/",
+      "destination": "/H004/index.html"
+    },
+    {
+      "source": "/H005/",
+      "destination": "/H005/index.html"
+    }
+  ]
 }
