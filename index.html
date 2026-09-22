@@ -733,6 +733,68 @@ attachAutocomplete(document.getElementById('hotelInput'),document.getElementById
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 
+
+<script id="with-location-click-fix">
+(function(){
+  function geo(statusEl, ok){
+    if(statusEl) statusEl.textContent = 'Requesting location permission…';
+    if(!navigator.geolocation){
+      if(statusEl) statusEl.textContent = 'Location is not supported by this browser.';
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      function(p){
+        window.currentPos = {lat:p.coords.latitude, lng:p.coords.longitude};
+        try{ localStorage.setItem('kh_current_coords', JSON.stringify(window.currentPos)); }catch(e){}
+        if(statusEl) statusEl.textContent = '✓ Current location ready.';
+        if(ok) ok(window.currentPos);
+      },
+      function(e){
+        if(!statusEl) return;
+        if(e.code === 1) statusEl.textContent = 'Location permission is blocked. Allow Location for this site and try again.';
+        else if(e.code === 2) statusEl.textContent = 'Could not determine your location. Turn on phone Location/GPS and try again.';
+        else if(e.code === 3) statusEl.textContent = 'Location request timed out. Tap again.';
+        else statusEl.textContent = 'Could not access your current location.';
+      },
+      {enableHighAccuracy:true, timeout:20000, maximumAge:0}
+    );
+  }
+
+  function bind(){
+    var buttons = Array.from(document.querySelectorAll('button, [role="button"]'));
+    buttons.forEach(function(btn){
+      var txt = (btn.textContent || '').trim().toLowerCase();
+      if(!txt.includes('current location')) return;
+      if(btn.dataset.withGeoBound === '1') return;
+
+      var container = btn.closest('section, .screen, .page, .panel, .card, div');
+      var allText = (container ? container.textContent : '').toLowerCase();
+      var nearby = allText.includes('nearby');
+
+      btn.dataset.withGeoBound = '1';
+      btn.removeAttribute('onclick');
+      btn.addEventListener('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        var status = document.getElementById(nearby ? 'nearLocStatus' : 'locStatus');
+        geo(status, function(pos){
+          /* Sync with the app's lexical currentPos variable when accessible. */
+          try{ currentPos = pos; }catch(e){}
+          if(nearby && status) status.textContent = '✓ Current location ready. Choose a category below.';
+        });
+      }, true);
+    });
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+
+  // Rebind if SPA-like navigation redraws sections.
+  new MutationObserver(bind).observe(document.documentElement, {childList:true, subtree:true});
+})();
+</script>
+
 </body></html>
 <style>
 /* v21 — use the approved illustrated WITH mascot asset */
