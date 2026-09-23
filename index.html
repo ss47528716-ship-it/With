@@ -396,6 +396,32 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
  color:#171917;padding:10px 13px;font-weight:900
 }
 </style>
+
+<style id="nearby-square-card-update">
+/* Nearby categories only — preserve all click/GPS/search behavior */
+#cats .grid,
+#cats .cat-grid,
+#cats .categories,
+#cats [class*="grid"]{
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:12px!important;
+}
+#cats .cat,
+#cats .category,
+#cats .place-card,
+#cats button:not(.back):not(.lang):not([class*="language"]){
+ aspect-ratio:1/1!important;
+ min-height:0!important;
+ height:auto!important;
+ border-radius:22px!important;
+ padding:18px 16px!important;
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:flex-start!important;
+ justify-content:flex-start!important;
+ gap:18px!important;
+}
+</style>
 </head><body><div id="withLangGate"><div class="langbox"><div>WELCOME TO KOREA</div><div class="langbrand">WITH</div><h2 class="langtitle">Choose your language</h2><p class="langsub">언어를 선택해 주세요</p><div class="langgrid"><button class="langchoice" data-lang="en">English</button><button class="langchoice" data-lang="ja">日本語</button><button class="langchoice" data-lang="zh-CN">简体中文</button><button class="langchoice" data-lang="zh-TW">繁體中文</button></div></div></div><button id="withLangChange" type="button">🌐 Language</button><div class="app">
 <div class="head"><div class="brandrow"><div class="brandcopy"><small>WELCOME TO KOREA</small><h1>WITH</h1><p>Your companion in Korea.</p></div><div class="mascot" aria-label="WITH mascot"><span class="mascot-bag"></span></div></div></div>
 
@@ -1049,6 +1075,64 @@ function closePhraseDetailPage(fromPop){
  if(!fromPop && history.state && history.state.withPhrase) history.back();
 }
 window.addEventListener('popstate',()=>closePhraseDetailPage(true));
+</script>
+
+
+<style id="phrase-true-page-force">
+#usefulPhrases > #phrasePanel{display:none!important}
+#phraseDetailPage{
+ display:none!important;position:fixed!important;inset:0!important;z-index:2147483000!important;
+ width:100vw!important;height:100dvh!important;background:#f7f9f2!important;
+ overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;
+ padding:20px 18px 42px!important;box-sizing:border-box!important;
+}
+#phraseDetailPage.show{display:block!important}
+</style>
+<script id="phrase-true-page-force-script">
+(function(){
+ function langNow(){
+   try{return typeof withLang==='function'?withLang():'en'}catch(e){return'en'}
+ }
+ function labelFor(k){
+   const l=langNow(), raw=(window.WITH_CAT_I18N&&WITH_CAT_I18N[k]&&WITH_CAT_I18N[k][l])||k;
+   return String(raw).replace(/^[^\p{L}\p{N}]+/u,'').trim();
+ }
+ window.openPhraseCategory=function(k){
+   const old=document.getElementById('phrasePanel'); if(old){old.classList.remove('show');old.style.display='none';}
+   const page=document.getElementById('phraseDetailPage');
+   const title=document.getElementById('phraseDetailTitle');
+   const list=document.getElementById('phraseDetailList');
+   if(!page||!title||!list)return;
+   const l=langNow(),ui=(window.WITH_PHRASE_UI&&WITH_PHRASE_UI[l])||WITH_PHRASE_UI.en;
+   title.textContent=labelFor(k); list.innerHTML='';
+   WITH_PHRASES[k].forEach(([en,ko])=>{
+     const c=document.createElement('div');c.className='phrase-card';
+     const e=document.createElement('div');e.className='phrase-en';
+     e.textContent=(typeof localPhrase==='function'?localPhrase(en):en);
+     const q=document.createElement('div');q.className='phrase-ko';q.textContent=ko;
+     const b=document.createElement('button');b.className='phrase-speak';b.type='button';
+     b.textContent=ui.play||'🔊 Play Korean';b.onclick=()=>speakUsefulKorean(ko);
+     c.append(e,q,b);list.appendChild(c);
+   });
+   page.classList.add('show');page.setAttribute('aria-hidden','false');page.scrollTop=0;
+   document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';
+ }
+ window.closePhraseDetailPage=function(){
+   const page=document.getElementById('phraseDetailPage');
+   if(page){page.classList.remove('show');page.setAttribute('aria-hidden','true');}
+   document.documentElement.style.overflow='';document.body.style.overflow='';
+ }
+ // Capture clicks on category cards so no older inline handler can run.
+ document.addEventListener('click',function(ev){
+   const btn=ev.target.closest && ev.target.closest('#usefulCats .useful-cat');
+   if(!btn)return;
+   const buttons=[...document.querySelectorAll('#usefulCats .useful-cat')];
+   const idx=buttons.indexOf(btn), keys=Object.keys(WITH_PHRASES);
+   if(idx<0||!keys[idx])return;
+   ev.preventDefault();ev.stopImmediatePropagation();
+   window.openPhraseCategory(keys[idx]);
+ },true);
+})();
 </script>
 
 </body></html>
