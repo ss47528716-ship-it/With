@@ -338,7 +338,21 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
 #homeLocStatus.loc-error{background:#ffe7e4;color:#b3261e;border:1.5px solid #e26b63}
 #homeLocAddress{display:none;margin-top:8px;padding:10px 12px;border-radius:12px;background:#fff;border:1.5px solid #b8c5a3;font-size:13px;line-height:1.45;font-weight:800}
 #homeLocAddress.show{display:block}
-</style></head><body><div id="withLangGate"><div class="langbox"><div>WELCOME TO KOREA</div><div class="langbrand">WITH</div><h2 class="langtitle">Choose your language</h2><p class="langsub">언어를 선택해 주세요</p><div class="langgrid"><button class="langchoice" data-lang="en">English</button><button class="langchoice" data-lang="ja">日本語</button><button class="langchoice" data-lang="zh-CN">简体中文</button><button class="langchoice" data-lang="zh-TW">繁體中文</button></div></div></div><button id="withLangChange" type="button">🌐 Language</button><div class="app">
+</style>
+<style id="with-useful-phrases-style">
+.useful-wrap{margin-top:22px;padding-top:18px;border-top:1px solid #ddd}
+.useful-title{font-size:22px;font-weight:900;margin-bottom:5px}
+.useful-sub{font-size:13px;opacity:.68;margin-bottom:13px}
+.useful-cats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.useful-cat{border:1.5px solid #171917;border-radius:16px;background:#fff;padding:13px 10px;font:inherit;font-weight:900;text-align:left}
+.phrase-panel{display:none;margin-top:14px}.phrase-panel.show{display:block}
+.phrase-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.phrase-head b{font-size:19px}.phrase-back{border:0;background:#eee;border-radius:10px;padding:8px 10px;font-weight:800}
+.phrase-card{background:#fff;border:1px solid #d8d8d2;border-radius:16px;padding:13px;margin:9px 0}
+.phrase-en{font-size:13px;opacity:.66;margin-bottom:5px}.phrase-ko{font-size:20px;font-weight:900;line-height:1.35}
+.phrase-speak{margin-top:9px;border:0;border-radius:12px;background:#BDF44A;color:#171917;padding:9px 12px;font-weight:900}
+</style>
+</head><body><div id="withLangGate"><div class="langbox"><div>WELCOME TO KOREA</div><div class="langbrand">WITH</div><h2 class="langtitle">Choose your language</h2><p class="langsub">언어를 선택해 주세요</p><div class="langgrid"><button class="langchoice" data-lang="en">English</button><button class="langchoice" data-lang="ja">日本語</button><button class="langchoice" data-lang="zh-CN">简体中文</button><button class="langchoice" data-lang="zh-TW">繁體中文</button></div></div></div><button id="withLangChange" type="button">🌐 Language</button><div class="app">
 <div class="head"><div class="brandrow"><div class="brandcopy"><small>WELCOME TO KOREA</small><h1>WITH</h1><p>Your companion in Korea.</p></div><div class="mascot" aria-label="WITH mascot"><span class="mascot-bag"></span></div></div></div>
 
 <section id="home" class="content">
@@ -348,7 +362,17 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
 </div><button class="banner route" onclick="go('route')"><span class="icon">🧭</span><h2>Find my way</h2><p>Open a real route to your destination.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop map">↗</i></span></button><button class="banner near" onclick="go('cats')"><span class="icon">📍</span><h2>Nearby places</h2><p>Find useful places around your current location.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop pin">⌖</i></span></button><button class="banner language" onclick="go('language')"><span class="icon">💬</span><h2>Translate to Korean</h2><p>Type what you want to say and translate it into Korean.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop talk">안녕</i></span></button><button class="banner emergency" onclick="go('emergency')"><span class="icon">🚨</span><h2>Emergency Help</h2><p>Police, ambulance and essential help in Korea.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop phone">!</i></span></button></section>
 <section id="route" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Find my way</div><div id="routeSavedStatus" class="locstatus">Starting from your saved location.</div><div style="height:14px"></div><div class="acwrap"><input id="dest" autocomplete="off" placeholder="Where do you want to go?"><div id="destSuggest" class="suggest"></div></div><button class="primary" onclick="route()">Open route</button><div id="routeout"></div></section>
 <section id="cats" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Nearby places</div><div id="nearLocStatus" class="locstatus">Using your saved location.</div><div class="cats"><button class="cat" data-icon="food" onclick="places('restaurant')"><span>🍜</span>Restaurants</button><button class="cat" data-icon="cafe" onclick="places('cafe')"><span>☕</span>Cafes</button><button class="cat" data-icon="attraction" onclick="places('tourist attraction')"><span>🏛️</span>Attractions</button><button class="cat" data-icon="store" onclick="places('convenience store')"><span>🏪</span>Convenience stores</button><button class="cat" data-icon="pharmacy" onclick="places('pharmacy')"><span>💊</span>Pharmacies</button><button class="cat" data-icon="atm" onclick="places('ATM')"><span>🏧</span>ATMs</button><button class="cat" data-icon="shopping" onclick="places('shopping mall')"><span>🛍️</span>Shopping malls</button><button class="cat" data-icon="market" onclick="places('supermarket')"><span>🛒</span>Supermarkets</button><button class="cat" data-icon="restroom" onclick="places('public restroom')"><span>🚻</span>Restrooms</button><button class="cat" data-icon="exchange" onclick="places('currency exchange')"><span>💱</span>Currency exchange</button><button class="cat" data-icon="luggage" onclick="places('luggage storage')"><span>🧳</span>Luggage storage</button><button class="cat" data-icon="hospital" onclick="places('hospital')"><span>🏥</span>Hospitals</button></div></section>
-<section id="language" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Translate to Korean</div><div class="notice" style="margin:0 0 14px">Enter text in your language. The Korean translation appears below.</div><textarea id="translateInput" placeholder="Type what you want to say..." style="width:100%;min-height:140px;padding:15px;border:1px solid #ddd;border-radius:12px;font:inherit;resize:vertical"></textarea><button class="primary" id="translateBtn" onclick="translateToKorean()">Translate to Korean</button><div id="translationResult" style="display:none;margin-top:14px;padding:18px;background:#f5f7fb;border-radius:14px"><div style="font-size:12px;color:#777;margin-bottom:7px">KOREAN</div><div id="translatedText" style="font-size:32px;font-weight:700;line-height:1.45;word-break:keep-all;letter-spacing:-.02em;padding:6px 0"></div><div style="margin-top:16px"><button class="back" style="margin:0;width:100%;padding:13px" onclick="speakTranslation()">🔊 Listen</button></div></div><div id="translationError" class="notice" style="display:none;margin-top:12px"></div></section>
+<section id="language" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Translate to Korean</div><div class="notice" style="margin:0 0 14px">Enter text in your language. The Korean translation appears below.</div><textarea id="translateInput" placeholder="Type what you want to say..." style="width:100%;min-height:140px;padding:15px;border:1px solid #ddd;border-radius:12px;font:inherit;resize:vertical"></textarea><button class="primary" id="translateBtn" onclick="translateToKorean()">Translate to Korean</button><div id="translationResult" style="display:none;margin-top:14px;padding:18px;background:#f5f7fb;border-radius:14px"><div style="font-size:12px;color:#777;margin-bottom:7px">KOREAN</div><div id="translatedText" style="font-size:32px;font-weight:700;line-height:1.45;word-break:keep-all;letter-spacing:-.02em;padding:6px 0"></div><div style="margin-top:16px"><button class="back" style="margin:0;width:100%;padding:13px" onclick="speakTranslation()">🔊 Listen</button></div></div><div id="translationError" class="notice" style="display:none;margin-top:12px"></div>
+<div class="useful-wrap" id="usefulPhrases">
+  <div class="useful-title">Useful Korean phrases</div>
+  <div class="useful-sub">Choose a situation. Tap 🔊 to play the Korean phrase.</div>
+  <div class="useful-cats" id="usefulCats"></div>
+  <div class="phrase-panel" id="phrasePanel">
+    <div class="phrase-head"><b id="phraseTitle"></b><button class="phrase-back" onclick="closePhraseCategory()">← Categories</button></div>
+    <div id="phraseList"></div>
+  </div>
+</div>
+</section>
 <section id="emergency" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Emergency Help</div><div class="emergency-card"><b>🚓 Police — 112</b><p>For crime, danger, theft or urgent police assistance.</p><button class="secondary" onclick="location.href='tel:112'">Call 112</button></div><div class="emergency-card"><b>🚑 Fire & Ambulance — 119</b><p>For medical emergencies, ambulance or fire.</p><button class="secondary" onclick="location.href='tel:119'">Call 119</button></div><div class="emergency-card"><b>🌏 Tourist Hotline — 1330</b><p>Korea Travel Hotline for travel assistance and interpretation.</p><button class="secondary" onclick="location.href='tel:1330'">Call 1330</button></div><button class="primary" onclick="places('hospital')">Find a nearby hospital</button></section>
 <section id="places" class="content" style="display:none"><button class="back" onclick="go('cats')">← Back</button><div class="title" id="ptitle"></div><div id="plist"></div></section>
 </div><div id="modal" class="modal"><div class="sheet"><h3>Set your starting place</h3><button class="secondary" onclick="useCurrentAsHotel()">◎ Use my current location</button><div id="hotelLocStatus" class="locstatus">Allow location access to use where you are now.</div><div style="height:12px"></div><div class="acwrap"><input id="hotelInput" autocomplete="off" placeholder="Search hotel name or address"><div id="hotelSuggest" class="suggest"></div></div><div class="notice">Type a hotel, motel, guesthouse or address. Common stays are suggested here; live Korea-wide accommodation search will use a place-search API in the deployed version.</div><button class="primary" onclick="saveHotel()">Save hotel</button><button class="secondary" onclick="closeModal()">Cancel</button><div class="notice">Your hotel is stored only in this browser.</div></div></div>
@@ -701,6 +725,205 @@ window.WITH_applyLanguage=apply;
   setupDest(); updateLocationUI();
 })();
 </script>
+
+<script id="with-useful-phrases">
+const WITH_PHRASES={
+"🍽 Restaurant":[
+["Do you have an English menu?","영어 메뉴가 있나요?"],["What do you recommend?","추천 메뉴가 뭐예요?"],["Please make it not spicy.","맵지 않게 해주세요."],["Please make it less spicy.","덜 맵게 해주세요."],["I can't eat spicy food.","매운 음식을 못 먹어요."],["Does this contain pork?","이 음식에 돼지고기가 들어가나요?"],["Does this contain seafood?","이 음식에 해산물이 들어가나요?"],["I'm vegetarian.","저는 채식주의자예요."],["I have a food allergy.","음식 알레르기가 있어요."],["Can I order this?","이걸로 주문할게요."],["One more, please.","하나 더 주세요."],["Can I have some water?","물 좀 주세요."],["Can I get this to go?","포장해 주세요."],["Can we split the bill?","따로 계산할 수 있나요?"],["Can I pay by card?","카드로 결제할 수 있나요?"],["The bill, please.","계산해 주세요."]
+],
+"☕ Cafe":[
+["One iced Americano, please.","아이스 아메리카노 한 잔 주세요."],["Can I get this decaf?","디카페인으로 가능할까요?"],["Can I get it less sweet?","덜 달게 해주세요."],["For here, please.","먹고 갈게요."],["To go, please.","포장해 주세요."],["Is there Wi-Fi?","와이파이 있나요?"],["What's the Wi-Fi password?","와이파이 비밀번호가 뭐예요?"],["Is there an outlet?","콘센트가 있나요?"],["Where is the restroom?","화장실이 어디예요?"]
+],
+"🚕 Taxi":[
+["Please take me to this address.","이 주소로 가주세요."],["Please take me here.","여기로 가주세요."],["Please stop here.","여기서 세워주세요."],["Please use the meter.","미터기로 가주세요."],["How long will it take?","얼마나 걸려요?"],["How much will it cost?","요금이 얼마나 나올까요?"],["Can I pay by card?","카드로 결제할 수 있나요?"],["Please put my luggage in the trunk.","짐을 트렁크에 넣어주세요."],["Could you wait here for a moment?","여기서 잠깐 기다려주실 수 있나요?"],["I think this is the wrong way.","길이 잘못된 것 같아요."]
+],
+"🚇 Subway & Bus":[
+["Where is the subway station?","지하철역이 어디예요?"],["Where is the bus stop?","버스 정류장이 어디예요?"],["Does this bus go there?","이 버스가 거기로 가나요?"],["Which line should I take?","몇 호선을 타야 하나요?"],["Do I need to transfer?","갈아타야 하나요?"],["Where should I transfer?","어디에서 갈아타야 하나요?"],["Where should I get off?","어디에서 내려야 하나요?"],["Can you tell me when we arrive?","도착하면 알려주실 수 있나요?"],["Where can I buy a transportation card?","교통카드는 어디에서 살 수 있나요?"],["Where can I recharge my transportation card?","교통카드는 어디에서 충전할 수 있나요?"]
+],
+"🏨 Hotel":[
+["I have a reservation.","예약했어요."],["I'd like to check in.","체크인하고 싶어요."],["Can I check in early?","얼리 체크인이 가능한가요?"],["What time is check-out?","체크아웃은 몇 시예요?"],["Can I leave my luggage here?","짐을 여기 맡겨도 될까요?"],["Can you call a taxi for me?","택시를 불러주실 수 있나요?"],["What's the Wi-Fi password?","와이파이 비밀번호가 뭐예요?"],["The Wi-Fi isn't working.","와이파이가 안 돼요."],["Can I get another towel?","수건 하나 더 받을 수 있을까요?"],["Can you clean my room?","방 청소를 해주실 수 있나요?"],["The air conditioner isn't working.","에어컨이 작동하지 않아요."],["The hot water isn't working.","뜨거운 물이 안 나와요."],["Can I check out late?","레이트 체크아웃이 가능한가요?"]
+],
+"🛍 Shopping":[
+["How much is this?","이거 얼마예요?"],["Do you have a different size?","다른 사이즈가 있나요?"],["Do you have a bigger size?","더 큰 사이즈가 있나요?"],["Do you have a smaller size?","더 작은 사이즈가 있나요?"],["Do you have this in another color?","다른 색상도 있나요?"],["Can I try this on?","입어봐도 될까요?"],["Where is the fitting room?","탈의실이 어디예요?"],["Can I get a tax refund?","택스 리펀드 받을 수 있나요?"],["Can I pay by card?","카드로 결제할 수 있나요?"],["Can I return or exchange this?","교환이나 환불이 가능한가요?"]
+],
+"🏪 Convenience Store":[
+["Where can I pay?","어디에서 계산하나요?"],["Can you heat this up?","이거 데워주실 수 있나요?"],["Can I have a bag?","봉투 하나 주세요."],["Do you sell SIM cards?","유심을 판매하나요?"],["Do you sell transportation cards?","교통카드를 판매하나요?"],["Can I recharge my transportation card here?","여기서 교통카드 충전할 수 있나요?"],["Where is the ATM?","ATM이 어디예요?"]
+],
+"💊 Pharmacy":[
+["I have a headache.","머리가 아파요."],["I have a stomachache.","배가 아파요."],["I have a cold.","감기에 걸렸어요."],["I have a fever.","열이 나요."],["I have a sore throat.","목이 아파요."],["I have diarrhea.","설사를 해요."],["I have an allergy.","알레르기가 있어요."],["Do I need a prescription?","처방전이 필요한가요?"],["How often should I take this?","이 약은 얼마나 자주 먹어야 하나요?"],["When should I take this medicine?","이 약은 언제 먹어야 하나요?"],["Are there any side effects?","부작용이 있나요?"]
+],
+"🏥 Hospital":[
+["I need to see a doctor.","진료를 받고 싶어요."],["It's an emergency.","응급 상황이에요."],["Where is the emergency room?","응급실이 어디예요?"],["I have travel insurance.","여행자 보험이 있어요."],["I don't have Korean health insurance.","한국 건강보험이 없어요."],["I have pain here.","여기가 아파요."],["I feel dizzy.","어지러워요."],["I can't breathe well.","숨쉬기가 힘들어요."],["I'm allergic to this medicine.","이 약에 알레르기가 있어요."],["Do you have an English-speaking doctor?","영어 가능한 의사 선생님이 있나요?"]
+],
+"🚨 Emergency":[
+["Please help me.","도와주세요."],["Please call the police.","경찰을 불러주세요."],["Please call an ambulance.","구급차를 불러주세요."],["I need to go to a hospital.","병원에 가야 해요."],["I was injured.","다쳤어요."],["I was robbed.","도난을 당했어요."],["Someone is following me.","누군가 저를 따라오고 있어요."],["I'm lost.","길을 잃었어요."],["I don't know where I am.","제가 어디에 있는지 모르겠어요."],["Please stay with me.","저와 같이 있어주세요."]
+],
+"📱 Lost & Found":[
+["I lost my phone.","휴대폰을 잃어버렸어요."],["I lost my wallet.","지갑을 잃어버렸어요."],["I lost my passport.","여권을 잃어버렸어요."],["I left something here.","여기에 물건을 두고 갔어요."],["Has anyone found this?","이 물건을 찾은 사람이 있나요?"],["Where is the lost and found?","분실물 센터가 어디예요?"],["Can you help me contact the police?","경찰에 연락하는 걸 도와주실 수 있나요?"]
+],
+"💳 Payment & ATM":[
+["Can I pay by card?","카드로 결제할 수 있나요?"],["Do you accept foreign cards?","해외 카드를 사용할 수 있나요?"],["My card isn't working.","카드가 결제되지 않아요."],["Can I pay in cash?","현금으로 결제할 수 있나요?"],["Where is the nearest ATM?","가장 가까운 ATM이 어디예요?"],["Can I withdraw cash with a foreign card?","해외 카드로 현금을 인출할 수 있나요?"],["Do you have change?","잔돈이 있나요?"],["Can I get a receipt?","영수증을 받을 수 있나요?"]
+],
+"💱 Currency Exchange":[
+["Where can I exchange money?","환전소가 어디예요?"],["I'd like to exchange money.","환전하고 싶어요."],["What's the exchange rate?","환율이 어떻게 되나요?"],["Is there a commission fee?","수수료가 있나요?"],["Can I exchange this currency?","이 화폐를 환전할 수 있나요?"],["Do I need my passport?","여권이 필요한가요?"]
+],
+"✈️ Airport":[
+["Where is the check-in counter?","체크인 카운터가 어디예요?"],["Where is the departure gate?","탑승구가 어디예요?"],["Where is baggage claim?","수하물 찾는 곳이 어디예요?"],["My luggage didn't arrive.","제 짐이 나오지 않았어요."],["Where can I take the airport bus?","공항버스는 어디에서 타나요?"],["Where is the AREX station?","공항철도역이 어디예요?"],["Where can I buy a SIM card?","유심은 어디에서 살 수 있나요?"],["Where can I exchange money?","환전소가 어디예요?"]
+],
+"🧳 Luggage Storage":[
+["Can I leave my luggage here?","짐을 여기 맡겨도 될까요?"],["How much is luggage storage?","짐 보관 비용이 얼마예요?"],["Until what time can I pick it up?","몇 시까지 찾으러 오면 되나요?"],["I'd like to pick up my luggage.","맡긴 짐을 찾으러 왔어요."],["Is there a luggage locker nearby?","근처에 물품 보관함이 있나요?"],["This locker isn't opening.","보관함이 열리지 않아요."]
+],
+"📶 SIM & Wi-Fi":[
+["Do you sell SIM cards?","유심을 판매하나요?"],["Do you have an eSIM?","이심(eSIM)이 있나요?"],["How much data does this include?","데이터가 얼마나 포함되어 있나요?"],["Can you help me activate it?","개통하는 걸 도와주실 수 있나요?"],["My SIM isn't working.","유심이 작동하지 않아요."],["Is there free Wi-Fi?","무료 와이파이가 있나요?"],["What's the Wi-Fi password?","와이파이 비밀번호가 뭐예요?"]
+],
+"🚻 Restroom":[
+["Where is the restroom?","화장실이 어디예요?"],["Is there a public restroom nearby?","근처에 공중화장실이 있나요?"],["Do I need a code to enter?","들어가려면 비밀번호가 필요한가요?"],["Can I use the restroom?","화장실을 사용해도 될까요?"],["Is there toilet paper?","휴지가 있나요?"]
+],
+"🎫 Tickets & Attractions":[
+["I'd like one ticket, please.","표 한 장 주세요."],["Two tickets, please.","표 두 장 주세요."],["Can I buy tickets here?","여기서 표를 살 수 있나요?"],["Do I need a reservation?","예약이 필요한가요?"],["Is there an English guide?","영어 안내가 있나요?"],["What time does it close?","몇 시에 문을 닫나요?"],["Where is the entrance?","입구가 어디예요?"],["Can I re-enter?","재입장이 가능한가요?"]
+],
+"📸 Photo & Directions":[
+["Could you take a photo for me?","사진 좀 찍어주실 수 있나요?"],["Where is this place?","이곳이 어디예요?"],["How do I get there?","거기 어떻게 가나요?"],["Is it within walking distance?","걸어서 갈 수 있나요?"],["Which way should I go?","어느 쪽으로 가야 하나요?"],["Can you show me on the map?","지도에서 보여주실 수 있나요?"]
+],
+"🗣 Communication":[
+["I don't speak Korean well.","한국어를 잘 못해요."],["Do you speak English?","영어 하실 수 있나요?"],["Please speak slowly.","천천히 말씀해 주세요."],["Could you say that again?","다시 말씀해 주세요."],["Could you write it down?","적어주실 수 있나요?"],["Please show me.","보여주세요."],["I understand.","이해했어요."],["I don't understand.","이해하지 못했어요."]
+]
+};
+function speakUsefulKorean(text){
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='ko-KR';u.rate=.88;u.volume=1;
+    const voices=speechSynthesis.getVoices();
+    const v=voices.find(x=>x.lang&&x.lang.toLowerCase().startsWith('ko'));
+    if(v)u.voice=v;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function renderUsefulCategories(){
+  const box=document.getElementById('usefulCats'); if(!box)return;
+  box.innerHTML='';
+  Object.keys(WITH_PHRASES).forEach(k=>{
+    const b=document.createElement('button');b.className='useful-cat';b.textContent=k;
+    b.onclick=()=>openPhraseCategory(k);box.appendChild(b);
+  });
+}
+function openPhraseCategory(k){
+  document.getElementById('usefulCats').style.display='none';
+  document.getElementById('phrasePanel').classList.add('show');
+  document.getElementById('phraseTitle').textContent=k;
+  const list=document.getElementById('phraseList');list.innerHTML='';
+  WITH_PHRASES[k].forEach(([en,ko])=>{
+    const c=document.createElement('div');c.className='phrase-card';
+    const e=document.createElement('div');e.className='phrase-en';e.textContent=en;
+    const q=document.createElement('div');q.className='phrase-ko';q.textContent=ko;
+    const b=document.createElement('button');b.className='phrase-speak';b.textContent='🔊 Play Korean';
+    b.onclick=()=>speakUsefulKorean(ko);
+    c.append(e,q,b);list.appendChild(c);
+  });
+}
+function closePhraseCategory(){
+  document.getElementById('phrasePanel').classList.remove('show');
+  document.getElementById('usefulCats').style.display='grid';
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderUsefulCategories);
+else renderUsefulCategories();
+</script>
+
+<script id="with-phrase-language-layer">
+const WITH_PHRASE_UI={
+ en:{banner:"Translate & Phrases",title:"Useful Korean phrases",sub:"Choose a situation. Tap 🔊 to play the Korean phrase.",back:"← Categories",play:"🔊 Play Korean"},
+ ja:{banner:"翻訳・便利なフレーズ",title:"便利な韓国語フレーズ",sub:"場面を選んでください。🔊を押すと韓国語で再生します。",back:"← カテゴリー",play:"🔊 韓国語を再生"},
+ zh_cn:{banner:"翻译・实用短语",title:"实用韩语短语",sub:"选择使用场景。点击🔊播放韩语。",back:"← 分类",play:"🔊 播放韩语"},
+ zh_tw:{banner:"翻譯・實用短句",title:"實用韓語短句",sub:"選擇使用情境。點擊🔊播放韓語。",back:"← 分類",play:"🔊 播放韓語"}
+};
+const WITH_CAT_I18N={
+"🍽 Restaurant":{ja:"🍽 レストラン",zh_cn:"🍽 餐厅",zh_tw:"🍽 餐廳"},
+"☕ Cafe":{ja:"☕ カフェ",zh_cn:"☕ 咖啡店",zh_tw:"☕ 咖啡店"},
+"🚕 Taxi":{ja:"🚕 タクシー",zh_cn:"🚕 出租车",zh_tw:"🚕 計程車"},
+"🚇 Subway & Bus":{ja:"🚇 地下鉄・バス",zh_cn:"🚇 地铁・公交",zh_tw:"🚇 捷運・公車"},
+"🏨 Hotel":{ja:"🏨 ホテル",zh_cn:"🏨 酒店",zh_tw:"🏨 飯店"},
+"🛍 Shopping":{ja:"🛍 ショッピング",zh_cn:"🛍 购物",zh_tw:"🛍 購物"},
+"🏪 Convenience Store":{ja:"🏪 コンビニ",zh_cn:"🏪 便利店",zh_tw:"🏪 便利商店"},
+"💊 Pharmacy":{ja:"💊 薬局",zh_cn:"💊 药店",zh_tw:"💊 藥局"},
+"🏥 Hospital":{ja:"🏥 病院",zh_cn:"🏥 医院",zh_tw:"🏥 醫院"},
+"🚨 Emergency":{ja:"🚨 緊急時",zh_cn:"🚨 紧急情况",zh_tw:"🚨 緊急情況"},
+"📱 Lost & Found":{ja:"📱 紛失物",zh_cn:"📱 失物招领",zh_tw:"📱 遺失物"},
+"💳 Payment & ATM":{ja:"💳 支払い・ATM",zh_cn:"💳 支付・ATM",zh_tw:"💳 付款・ATM"},
+"💱 Currency Exchange":{ja:"💱 両替",zh_cn:"💱 换汇",zh_tw:"💱 換匯"},
+"✈️ Airport":{ja:"✈️ 空港",zh_cn:"✈️ 机场",zh_tw:"✈️ 機場"},
+"🧳 Luggage Storage":{ja:"🧳 荷物預かり",zh_cn:"🧳 行李寄存",zh_tw:"🧳 行李寄放"},
+"📶 SIM & Wi-Fi":{ja:"📶 SIM・Wi-Fi",zh_cn:"📶 SIM卡・Wi-Fi",zh_tw:"📶 SIM卡・Wi-Fi"},
+"🚻 Restroom":{ja:"🚻 トイレ",zh_cn:"🚻 洗手间",zh_tw:"🚻 洗手間"},
+"🎫 Tickets & Attractions":{ja:"🎫 チケット・観光",zh_cn:"🎫 门票・景点",zh_tw:"🎫 門票・景點"},
+"📸 Photo & Directions":{ja:"📸 写真・道案内",zh_cn:"📸 拍照・问路",zh_tw:"📸 拍照・問路"},
+"🗣 Communication":{ja:"🗣 会話",zh_cn:"🗣 沟通",zh_tw:"🗣 溝通"}
+};
+const WITH_PHRASE_TRANSLATIONS={
+ja:{
+"Do you have an English menu?":"英語のメニューはありますか？","What do you recommend?":"おすすめは何ですか？","Please make it not spicy.":"辛くしないでください。","Please make it less spicy.":"辛さ控えめでお願いします。","I can't eat spicy food.":"辛いものが食べられません。","Does this contain pork?":"豚肉は入っていますか？","Does this contain seafood?":"海鮮は入っていますか？","I'm vegetarian.":"ベジタリアンです。","I have a food allergy.":"食物アレルギーがあります。","Can I order this?":"これを注文します。","One more, please.":"もう一つください。","Can I have some water?":"お水をください。","Can I get this to go?":"持ち帰りにしてください。","Can we split the bill?":"別々に会計できますか？","Can I pay by card?":"カードで支払えますか？","The bill, please.":"お会計をお願いします。",
+"Where is the restroom?":"トイレはどこですか？","What's the Wi-Fi password?":"Wi-Fiのパスワードは何ですか？","Please take me here.":"ここまでお願いします。","Please stop here.":"ここで止めてください。","How long will it take?":"どのくらいかかりますか？","How much will it cost?":"料金はいくらくらいですか？","I have a reservation.":"予約しています。","Can I leave my luggage here?":"荷物を預けてもいいですか？","How much is this?":"これはいくらですか？","Do you speak English?":"英語を話せますか？","Please speak slowly.":"ゆっくり話してください。","Could you say that again?":"もう一度言ってください。","I don't understand.":"わかりません。","Please help me.":"助けてください。","I lost my phone.":"携帯電話をなくしました。","I lost my wallet.":"財布をなくしました。","I lost my passport.":"パスポートをなくしました。","Where is the subway station?":"地下鉄の駅はどこですか？","Where is the bus stop?":"バス停はどこですか？","I need to see a doctor.":"診察を受けたいです。","Where is the emergency room?":"救急外来はどこですか？","Could you take a photo for me?":"写真を撮ってもらえますか？","How do I get there?":"そこへはどう行けばいいですか？"
+},
+zh_cn:{
+"Do you have an English menu?":"有英文菜单吗？","What do you recommend?":"有什么推荐的吗？","Please make it not spicy.":"请不要放辣。","Please make it less spicy.":"请少放辣。","I can't eat spicy food.":"我不能吃辣。","Does this contain pork?":"这个里面有猪肉吗？","Does this contain seafood?":"这个里面有海鲜吗？","I'm vegetarian.":"我是素食者。","I have a food allergy.":"我有食物过敏。","Can I order this?":"我要点这个。","One more, please.":"请再来一个。","Can I have some water?":"请给我一些水。","Can I get this to go?":"请帮我打包。","Can we split the bill?":"可以分开结账吗？","Can I pay by card?":"可以刷卡吗？","The bill, please.":"请结账。",
+"Where is the restroom?":"洗手间在哪里？","What's the Wi-Fi password?":"Wi-Fi密码是什么？","Please take me here.":"请带我去这里。","Please stop here.":"请在这里停车。","How long will it take?":"需要多长时间？","How much will it cost?":"大概多少钱？","I have a reservation.":"我有预订。","Can I leave my luggage here?":"可以把行李寄存在这里吗？","How much is this?":"这个多少钱？","Do you speak English?":"你会说英语吗？","Please speak slowly.":"请说慢一点。","Could you say that again?":"请再说一遍。","I don't understand.":"我听不懂。","Please help me.":"请帮帮我。","I lost my phone.":"我的手机丢了。","I lost my wallet.":"我的钱包丢了。","I lost my passport.":"我的护照丢了。","Where is the subway station?":"地铁站在哪里？","Where is the bus stop?":"公交车站在哪里？","I need to see a doctor.":"我想看医生。","Where is the emergency room?":"急诊室在哪里？","Could you take a photo for me?":"可以帮我拍张照片吗？","How do I get there?":"怎么去那里？"
+},
+zh_tw:{
+"Do you have an English menu?":"有英文菜單嗎？","What do you recommend?":"有什麼推薦的嗎？","Please make it not spicy.":"請不要加辣。","Please make it less spicy.":"請少放辣。","I can't eat spicy food.":"我不能吃辣。","Does this contain pork?":"這裡面有豬肉嗎？","Does this contain seafood?":"這裡面有海鮮嗎？","I'm vegetarian.":"我是素食者。","I have a food allergy.":"我有食物過敏。","Can I order this?":"我要點這個。","One more, please.":"請再來一個。","Can I have some water?":"請給我一些水。","Can I get this to go?":"請幫我外帶。","Can we split the bill?":"可以分開結帳嗎？","Can I pay by card?":"可以刷卡嗎？","The bill, please.":"請結帳。",
+"Where is the restroom?":"洗手間在哪裡？","What's the Wi-Fi password?":"Wi-Fi密碼是什麼？","Please take me here.":"請帶我去這裡。","Please stop here.":"請在這裡停車。","How long will it take?":"需要多久？","How much will it cost?":"大概多少錢？","I have a reservation.":"我有預訂。","Can I leave my luggage here?":"可以把行李寄放在這裡嗎？","How much is this?":"這個多少錢？","Do you speak English?":"你會說英語嗎？","Please speak slowly.":"請說慢一點。","Could you say that again?":"請再說一次。","I don't understand.":"我聽不懂。","Please help me.":"請幫幫我。","I lost my phone.":"我的手機不見了。","I lost my wallet.":"我的錢包不見了。","I lost my passport.":"我的護照不見了。","Where is the subway station?":"捷運站在哪裡？","Where is the bus stop?":"公車站在哪裡？","I need to see a doctor.":"我想看醫生。","Where is the emergency room?":"急診室在哪裡？","Could you take a photo for me?":"可以幫我拍張照片嗎？","How do I get there?":"要怎麼去那裡？"
+}};
+function withLang(){
+ const raw=(localStorage.getItem('with_ui_lang')||'en').toLowerCase();
+ if(raw.includes('ja')||raw.includes('jp'))return 'ja';
+ if(raw.includes('tw')||raw.includes('traditional')||raw.includes('zh-t'))return 'zh_tw';
+ if(raw.includes('zh')||raw.includes('cn')||raw.includes('simplified'))return 'zh_cn';
+ return 'en';
+}
+function localPhrase(en){const l=withLang();return (WITH_PHRASE_TRANSLATIONS[l]&&WITH_PHRASE_TRANSLATIONS[l][en])||en;}
+function applyPhraseLanguage(){
+ const l=withLang(),ui=WITH_PHRASE_UI[l]||WITH_PHRASE_UI.en;
+ const t=document.querySelector('#usefulPhrases .useful-title'),sub=document.querySelector('#usefulPhrases .useful-sub'),back=document.querySelector('#phrasePanel .phrase-back');
+ if(t)t.textContent=ui.title;if(sub)sub.textContent=ui.sub;if(back)back.textContent=ui.back;
+ // Change the home Translate banner title only; identify by existing text / onclick target.
+ document.querySelectorAll('button,.banner').forEach(el=>{
+   const tx=(el.textContent||'').trim();
+   if(/Translate to Korean|Translate & Phrases|翻訳|翻译|翻譯/.test(tx)){
+      const candidates=el.querySelectorAll('h1,h2,h3,.title,b,strong,span,div');
+      let done=false;
+      candidates.forEach(x=>{if(!done && /Translate to Korean|Translate & Phrases|翻訳|翻译|翻譯/.test((x.textContent||'').trim()) && (x.textContent||'').trim().length<40){x.textContent=ui.banner;done=true;}});
+   }
+ });
+ renderUsefulCategories();
+}
+const _oldRenderUsefulCategories=renderUsefulCategories;
+renderUsefulCategories=function(){
+ const box=document.getElementById('usefulCats');if(!box)return;
+ const l=withLang();box.innerHTML='';
+ Object.keys(WITH_PHRASES).forEach(k=>{
+   const b=document.createElement('button');b.className='useful-cat';
+   b.textContent=(WITH_CAT_I18N[k]&&WITH_CAT_I18N[k][l])||k;
+   b.onclick=()=>openPhraseCategory(k);box.appendChild(b);
+ });
+};
+openPhraseCategory=function(k){
+ const l=withLang(),ui=WITH_PHRASE_UI[l]||WITH_PHRASE_UI.en;
+ document.getElementById('usefulCats').style.display='none';
+ document.getElementById('phrasePanel').classList.add('show');
+ document.getElementById('phraseTitle').textContent=(WITH_CAT_I18N[k]&&WITH_CAT_I18N[k][l])||k;
+ const list=document.getElementById('phraseList');list.innerHTML='';
+ WITH_PHRASES[k].forEach(([en,ko])=>{
+   const c=document.createElement('div');c.className='phrase-card';
+   const e=document.createElement('div');e.className='phrase-en';e.textContent=localPhrase(en);
+   const q=document.createElement('div');q.className='phrase-ko';q.textContent=ko;
+   const b=document.createElement('button');b.className='phrase-speak';b.textContent=ui.play;
+   b.onclick=()=>speakUsefulKorean(ko);c.append(e,q,b);list.appendChild(c);
+ });
+};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(applyPhraseLanguage,0));
+else setTimeout(applyPhraseLanguage,0);
+window.addEventListener('storage',applyPhraseLanguage);
+</script>
+
 </body></html>
 <style>
 /* v21 — use the approved illustrated WITH mascot asset */
