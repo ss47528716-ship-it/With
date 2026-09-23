@@ -556,7 +556,7 @@ window.WITH_applyLanguage=apply;
   function valid(p){return p && Number.isFinite(Number(p.lat)) && Number.isFinite(Number(p.lng));}
   function loadSaved(){
     try{
-      const p=JSON.parse(localStorage.getItem('with_saved_location')||localStorage.getItem('kh_current_coords')||localStorage.getItem('kh_nearby_coords')||'null');
+      const p=JSON.parse(localStorage.getItem('with_saved_location')||'null');
       if(valid(p)){ currentPos={lat:Number(p.lat),lng:Number(p.lng)}; return currentPos; }
     }catch(e){}
     return null;
@@ -579,8 +579,6 @@ window.WITH_applyLanguage=apply;
       if(valid(pos)){
         currentPos={lat:Number(pos.lat),lng:Number(pos.lng)};
         localStorage.setItem('with_saved_location',JSON.stringify(currentPos));
-        localStorage.setItem('kh_current_coords',JSON.stringify(currentPos));
-        localStorage.setItem('kh_nearby_coords',JSON.stringify(currentPos));
         updateLocationUI();
       }
     });
@@ -595,10 +593,16 @@ window.WITH_applyLanguage=apply;
     document.getElementById('openSavedRoute').onclick=()=>location.href=url;
   };
   window.places=function(q){
-    const p=loadSaved(), status=document.getElementById('nearLocStatus');
-    if(!p){if(status)status.textContent='Save your current location on the home screen first.';return}
-    const url='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'&center='+encodeURIComponent(p.lat+','+p.lng);
-    window.open(url,'_blank','noopener,noreferrer');
+    let p=null;
+    try{ p=JSON.parse(localStorage.getItem('with_saved_location')||'null'); }catch(e){}
+    const status=document.getElementById('nearLocStatus');
+    if(!valid(p)){
+      if(status) status.textContent='Save your current location on the home screen first.';
+      return;
+    }
+    const lat=Number(p.lat), lng=Number(p.lng);
+    if(status) status.textContent='✓ Searching around your saved current location.';
+    window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'&center='+encodeURIComponent(lat+','+lng),'_blank','noopener,noreferrer');
   };
 
   // Fast destination autocomplete: common Korean tourist destinations, stations and neighborhoods.
