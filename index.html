@@ -647,17 +647,21 @@ window.WITH_applyLanguage=apply;
 
   window.places=function(q){
     let saved=null;
-    try{ saved=JSON.parse(localStorage.getItem('with_saved_location')||'null'); }catch(e){}
+    try{saved=JSON.parse(localStorage.getItem('with_saved_location')||'null');}catch(e){}
     const status=document.getElementById('nearLocStatus');
-    if(!saved || !Number.isFinite(Number(saved.lat)) || !Number.isFinite(Number(saved.lng))){
-      if(status) status.textContent='Save your current location on the home screen first.';
+    if(!saved||!Number.isFinite(Number(saved.lat))||!Number.isFinite(Number(saved.lng))){
+      if(status)status.textContent='Save your current location on the home screen first.';
       return;
     }
-    const lat=Number(saved.lat), lng=Number(saved.lng);
+    const lat=Number(saved.lat),lng=Number(saved.lng);
     const address=(localStorage.getItem('with_saved_address')||'').trim();
-    if(status) status.textContent='✓ Nearby 기준: '+(address || (lat.toFixed(5)+', '+lng.toFixed(5)));
-    const query=encodeURIComponent(q+' near '+lat+','+lng);
-    window.open('https://www.google.com/maps/search/?api=1&query='+query,'_blank','noopener,noreferrer');
+    if(status)status.textContent='✓ Nearby 기준: '+(address||lat.toFixed(5)+', '+lng.toFixed(5));
+    if(!address){
+      if(status)status.textContent='Location address is not ready. Please save your current location again.';
+      return;
+    }
+    const url='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q+' near '+address);
+    window.open(url,'_blank','noopener,noreferrer');
   };
 
   // Fast destination autocomplete: common Korean tourist destinations, stations and neighborhoods.
