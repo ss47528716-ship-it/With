@@ -422,6 +422,48 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
  gap:18px!important;
 }
 </style>
+
+<style id="fuller-nearby-phrase-cards">
+/* Fill the square cards more confidently without changing any behavior */
+#cats .cats{gap:12px!important}
+#cats .cat{
+ padding:16px 14px!important;
+ gap:14px!important;
+ font-size:19px!important;
+ font-weight:900!important;
+ line-height:1.08!important;
+ justify-content:flex-start!important;
+}
+#cats .cat span{
+ width:62px!important;height:62px!important;min-width:62px!important;
+ border-radius:17px!important;border-width:2px!important;
+ margin:0!important;
+}
+#cats .cat span:before{width:34px!important;height:34px!important}
+#cats .cat:after{right:14px!important;top:14px!important;font-size:27px!important}
+
+#usefulCats{gap:12px!important}
+#usefulCats .useful-cat{
+ padding:16px 14px!important;
+ gap:14px!important;
+ font-size:19px!important;
+ font-weight:900!important;
+ line-height:1.08!important;
+ justify-content:flex-start!important;
+}
+#usefulCats .phrase-green-icon{
+ width:62px!important;height:62px!important;min-width:62px!important;
+ border-radius:17px!important;border-width:2px!important;
+}
+#usefulCats .phrase-green-icon svg{width:34px!important;height:34px!important;stroke-width:2!important}
+#usefulCats .phrase-card-label{font-size:19px!important;font-weight:900!important;line-height:1.08!important}
+@media(max-width:360px){
+ #cats .cat,#usefulCats .useful-cat{font-size:17px!important;padding:14px 12px!important;gap:12px!important}
+ #cats .cat span,#usefulCats .phrase-green-icon{width:56px!important;height:56px!important;min-width:56px!important}
+ #cats .cat span:before,#usefulCats .phrase-green-icon svg{width:31px!important;height:31px!important}
+ #usefulCats .phrase-card-label{font-size:17px!important}
+}
+</style>
 </head><body><div id="withLangGate"><div class="langbox"><div>WELCOME TO KOREA</div><div class="langbrand">WITH</div><h2 class="langtitle">Choose your language</h2><p class="langsub">언어를 선택해 주세요</p><div class="langgrid"><button class="langchoice" data-lang="en">English</button><button class="langchoice" data-lang="ja">日本語</button><button class="langchoice" data-lang="zh-CN">简体中文</button><button class="langchoice" data-lang="zh-TW">繁體中文</button></div></div></div><button id="withLangChange" type="button">🌐 Language</button><div class="app">
 <div class="head"><div class="brandrow"><div class="brandcopy"><small>WELCOME TO KOREA</small><h1>WITH</h1><p>Your companion in Korea.</p></div><div class="mascot" aria-label="WITH mascot"><span class="mascot-bag"></span></div></div></div>
 
