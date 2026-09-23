@@ -352,6 +352,11 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
 .phrase-en{font-size:13px;opacity:.66;margin-bottom:5px}.phrase-ko{font-size:20px;font-weight:900;line-height:1.35}
 .phrase-speak{margin-top:9px;border:0;border-radius:12px;background:#BDF44A;color:#171917;padding:9px 12px;font-weight:900}
 </style>
+
+<style id="phrase-nearby-icon-style">
+.useful-cat{display:flex!important;align-items:center!important;gap:11px!important}
+.useful-cat-icon{width:36px;height:36px;min-width:36px;border:1.6px solid #171917;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:#fff;font-size:18px;line-height:1}
+</style>
 </head><body><div id="withLangGate"><div class="langbox"><div>WELCOME TO KOREA</div><div class="langbrand">WITH</div><h2 class="langtitle">Choose your language</h2><p class="langsub">언어를 선택해 주세요</p><div class="langgrid"><button class="langchoice" data-lang="en">English</button><button class="langchoice" data-lang="ja">日本語</button><button class="langchoice" data-lang="zh-CN">简体中文</button><button class="langchoice" data-lang="zh-TW">繁體中文</button></div></div></div><button id="withLangChange" type="button">🌐 Language</button><div class="app">
 <div class="head"><div class="brandrow"><div class="brandcopy"><small>WELCOME TO KOREA</small><h1>WITH</h1><p>Your companion in Korea.</p></div><div class="mascot" aria-label="WITH mascot"><span class="mascot-bag"></span></div></div></div>
 
@@ -922,6 +927,39 @@ openPhraseCategory=function(k){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(applyPhraseLanguage,0));
 else setTimeout(applyPhraseLanguage,0);
 window.addEventListener('storage',applyPhraseLanguage);
+</script>
+
+
+<script id="phrase-nearby-icons">
+const WITH_CAT_ICONS={
+"🍽 Restaurant":"🍴","☕ Cafe":"☕","🚕 Taxi":"🚕","🚇 Subway & Bus":"🚇",
+"🏨 Hotel":"⌂","🛍 Shopping":"▱","🏪 Convenience Store":"▦","💊 Pharmacy":"✚",
+"🏥 Hospital":"✚","🚨 Emergency":"!","📱 Lost & Found":"⌕","💳 Payment & ATM":"▣",
+"💱 Currency Exchange":"↔","✈️ Airport":"✈","🧳 Luggage Storage":"▰","📶 SIM & Wi-Fi":"⌁",
+"🚻 Restroom":"WC","🎫 Tickets & Attractions":"▤","📸 Photo & Directions":"◎","🗣 Communication":"◌"
+};
+function cleanCatLabel(v){return String(v||"").replace(/^[^\p{L}\p{N}]+/u,"").trim();}
+function stylePhraseCategoryButtons(){
+ const l=withLang();
+ document.querySelectorAll('#usefulCats .useful-cat').forEach((b,i)=>{
+   const key=Object.keys(WITH_PHRASES)[i]; if(!key)return;
+   const label=(WITH_CAT_I18N[key]&&WITH_CAT_I18N[key][l])||key;
+   b.innerHTML='';
+   const ic=document.createElement('span');ic.className='useful-cat-icon';ic.textContent=WITH_CAT_ICONS[key]||'•';
+   const tx=document.createElement('span');tx.textContent=cleanCatLabel(label);
+   b.append(ic,tx);
+ });
+}
+const _renderNearbyIconCats=renderUsefulCategories;
+renderUsefulCategories=function(){_renderNearbyIconCats();setTimeout(stylePhraseCategoryButtons,0);}
+const _openNearbyIconCat=openPhraseCategory;
+openPhraseCategory=function(k){
+ _openNearbyIconCat(k);
+ const l=withLang(),label=(WITH_CAT_I18N[k]&&WITH_CAT_I18N[k][l])||k;
+ const h=document.getElementById('phraseTitle');if(h)h.textContent=cleanCatLabel(label);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(stylePhraseCategoryButtons,20));
+else setTimeout(stylePhraseCategoryButtons,20);
 </script>
 
 </body></html>
