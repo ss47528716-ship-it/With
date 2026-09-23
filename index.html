@@ -353,9 +353,23 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
 .phrase-speak{margin-top:9px;border:0;border-radius:12px;background:#BDF44A;color:#171917;padding:9px 12px;font-weight:900}
 </style>
 
-<style id="phrase-nearby-icon-style">
-.useful-cat{display:flex!important;align-items:center!important;gap:11px!important}
-.useful-cat-icon{width:36px;height:36px;min-width:36px;border:1.6px solid #171917;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:#fff;font-size:18px;line-height:1}
+<style id="useful-nearby-card-layout">
+#usefulCats{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+#usefulCats .useful-cat{
+ min-height:148px!important;padding:18px 16px!important;
+ border:2px solid #697065!important;border-radius:22px!important;
+ background:#fff!important;box-shadow:0 5px 0 rgba(75,82,73,.18)!important;
+ display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+ justify-content:flex-start!important;gap:18px!important;text-align:left!important;
+ color:#171917!important;font-size:17px!important;font-weight:900!important;line-height:1.15!important;
+}
+#usefulCats .phrase-green-icon{
+ width:54px;height:54px;min-width:54px;border:2px solid #171917;border-radius:15px;
+ background:#EAF9C9;display:flex;align-items:center;justify-content:center;
+ color:#171917;font-size:20px;font-weight:900;line-height:1;
+}
+#usefulCats .phrase-green-icon svg{width:28px;height:28px;stroke:#171917;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#usefulCats .phrase-card-label{display:block}
 </style>
 </head><body><div id="withLangGate"><div class="langbox"><div>WELCOME TO KOREA</div><div class="langbrand">WITH</div><h2 class="langtitle">Choose your language</h2><p class="langsub">언어를 선택해 주세요</p><div class="langgrid"><button class="langchoice" data-lang="en">English</button><button class="langchoice" data-lang="ja">日本語</button><button class="langchoice" data-lang="zh-CN">简体中文</button><button class="langchoice" data-lang="zh-TW">繁體中文</button></div></div></div><button id="withLangChange" type="button">🌐 Language</button><div class="app">
 <div class="head"><div class="brandrow"><div class="brandcopy"><small>WELCOME TO KOREA</small><h1>WITH</h1><p>Your companion in Korea.</p></div><div class="mascot" aria-label="WITH mascot"><span class="mascot-bag"></span></div></div></div>
@@ -930,36 +944,44 @@ window.addEventListener('storage',applyPhraseLanguage);
 </script>
 
 
-<script id="phrase-nearby-icons">
-const WITH_CAT_ICONS={
-"🍽 Restaurant":"🍴","☕ Cafe":"☕","🚕 Taxi":"🚕","🚇 Subway & Bus":"🚇",
-"🏨 Hotel":"⌂","🛍 Shopping":"▱","🏪 Convenience Store":"▦","💊 Pharmacy":"✚",
-"🏥 Hospital":"✚","🚨 Emergency":"!","📱 Lost & Found":"⌕","💳 Payment & ATM":"▣",
-"💱 Currency Exchange":"↔","✈️ Airport":"✈","🧳 Luggage Storage":"▰","📶 SIM & Wi-Fi":"⌁",
-"🚻 Restroom":"WC","🎫 Tickets & Attractions":"▤","📸 Photo & Directions":"◎","🗣 Communication":"◌"
+<script id="useful-nearby-card-render">
+const PHRASE_ICON_SVGS={
+"🍽 Restaurant":'<svg viewBox="0 0 24 24"><path d="M6 3v8M3.5 3v5c0 2 5 2 5 0V3M6 11v10M15 3v18M15 3c4 2 4 8 0 9"/></svg>',
+"☕ Cafe":'<svg viewBox="0 0 24 24"><path d="M4 7h13v8a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4zM17 9h2a3 3 0 0 1 0 6h-2M8 3v2M13 3v2"/></svg>',
+"🚕 Taxi":'<svg viewBox="0 0 24 24"><path d="M5 9l2-4h10l2 4M4 9h16v8H4zM7 17v2M17 17v2M7 13h.01M17 13h.01M9 5l1-2h4l1 2"/></svg>',
+"🚇 Subway & Bus":'<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M8 7h8M8 14h.01M16 14h.01M8 18l-2 3M16 18l2 3"/></svg>',
+"🏨 Hotel":'<svg viewBox="0 0 24 24"><path d="M4 20V6h16v14M8 10h2M14 10h2M8 14h2M14 14h2M10 20v-3h4v3"/></svg>',
+"🛍 Shopping":'<svg viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6zM9 9V6a3 3 0 0 1 6 0v3"/></svg>',
+"🏪 Convenience Store":'<svg viewBox="0 0 24 24"><path d="M4 8l2-5h12l2 5M5 8v13h14V8M3 8h18M8 21v-7h8v7"/></svg>',
+"💊 Pharmacy":'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+"🏥 Hospital":'<svg viewBox="0 0 24 24"><path d="M4 21V5h16v16M12 8v8M8 12h8M8 21v-3h8v3"/></svg>',
+"🚨 Emergency":'<svg viewBox="0 0 24 24"><path d="M6 18h12l-1-9a5 5 0 0 0-10 0zM4 21h16M12 5V2M4 7L2 5M20 7l2-2"/></svg>',
+"📱 Lost & Found":'<svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L21 21M10 7v4M10 14h.01"/></svg>',
+"💳 Payment & ATM":'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 15h4"/></svg>',
+"💱 Currency Exchange":'<svg viewBox="0 0 24 24"><path d="M4 8h14M15 5l3 3-3 3M20 16H6M9 13l-3 3 3 3"/></svg>',
+"✈️ Airport":'<svg viewBox="0 0 24 24"><path d="M2 16l20-8M9 13l-4-5M14 11l1-7M9 13l1 6"/></svg>',
+"🧳 Luggage Storage":'<svg viewBox="0 0 24 24"><rect x="5" y="6" width="14" height="15" rx="2"/><path d="M9 6V3h6v3M9 10v7M15 10v7"/></svg>',
+"📶 SIM & Wi-Fi":'<svg viewBox="0 0 24 24"><path d="M4 9a12 12 0 0 1 16 0M7 13a8 8 0 0 1 10 0M10 17a3 3 0 0 1 4 0M12 21h.01"/></svg>',
+"🚻 Restroom":'<svg viewBox="0 0 24 24"><circle cx="7" cy="5" r="2"/><circle cx="17" cy="5" r="2"/><path d="M7 8v6M4 11h6M5 14v7M9 14v7M17 8v5M14 11h6M15 13l-1 5h2v3M19 13l1 5h-2v3"/></svg>',
+"🎫 Tickets & Attractions":'<svg viewBox="0 0 24 24"><path d="M4 7h16v4a2 2 0 0 0 0 4v4H4v-4a2 2 0 0 0 0-4zM12 7v12"/></svg>',
+"📸 Photo & Directions":'<svg viewBox="0 0 24 24"><path d="M4 7h4l2-3h4l2 3h4v13H4z"/><circle cx="12" cy="13" r="4"/></svg>',
+"🗣 Communication":'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4zM8 10h8M8 13h5"/></svg>'
 };
-function cleanCatLabel(v){return String(v||"").replace(/^[^\p{L}\p{N}]+/u,"").trim();}
-function stylePhraseCategoryButtons(){
+function phraseLabel(key){
  const l=withLang();
- document.querySelectorAll('#usefulCats .useful-cat').forEach((b,i)=>{
-   const key=Object.keys(WITH_PHRASES)[i]; if(!key)return;
-   const label=(WITH_CAT_I18N[key]&&WITH_CAT_I18N[key][l])||key;
-   b.innerHTML='';
-   const ic=document.createElement('span');ic.className='useful-cat-icon';ic.textContent=WITH_CAT_ICONS[key]||'•';
-   const tx=document.createElement('span');tx.textContent=cleanCatLabel(label);
-   b.append(ic,tx);
+ const raw=(WITH_CAT_I18N[key]&&WITH_CAT_I18N[key][l])||key;
+ return String(raw).replace(/^[^\p{L}\p{N}]+/u,'').trim();
+}
+function renderUsefulCategories(){
+ const box=document.getElementById('usefulCats');if(!box)return;
+ box.innerHTML='';
+ Object.keys(WITH_PHRASES).forEach(k=>{
+   const b=document.createElement('button');b.className='useful-cat';
+   const ic=document.createElement('span');ic.className='phrase-green-icon';ic.innerHTML=PHRASE_ICON_SVGS[k]||'';
+   const tx=document.createElement('span');tx.className='phrase-card-label';tx.textContent=phraseLabel(k);
+   b.append(ic,tx);b.onclick=()=>openPhraseCategory(k);box.appendChild(b);
  });
 }
-const _renderNearbyIconCats=renderUsefulCategories;
-renderUsefulCategories=function(){_renderNearbyIconCats();setTimeout(stylePhraseCategoryButtons,0);}
-const _openNearbyIconCat=openPhraseCategory;
-openPhraseCategory=function(k){
- _openNearbyIconCat(k);
- const l=withLang(),label=(WITH_CAT_I18N[k]&&WITH_CAT_I18N[k][l])||k;
- const h=document.getElementById('phraseTitle');if(h)h.textContent=cleanCatLabel(label);
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(stylePhraseCategoryButtons,20));
-else setTimeout(stylePhraseCategoryButtons,20);
 </script>
 
 </body></html>
