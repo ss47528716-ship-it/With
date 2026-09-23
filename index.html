@@ -333,12 +333,17 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
 .home-location-copy{display:flex;flex-direction:column;gap:4px;margin-bottom:11px}
 .home-location-copy b{font-size:18px}.home-location-copy span{font-size:13px;line-height:1.4;opacity:.72}
 .home-location-btn{margin:0!important;width:100%}
+#homeLocStatus{padding:10px 12px;border-radius:12px;font-weight:800;background:#f1f1ed;color:#555}
+#homeLocStatus.loc-ok{background:#e8f8d0;color:#247100;border:1.5px solid #72b92f}
+#homeLocStatus.loc-error{background:#ffe7e4;color:#b3261e;border:1.5px solid #e26b63}
+#homeLocAddress{display:none;margin-top:8px;padding:10px 12px;border-radius:12px;background:#fff;border:1.5px solid #b8c5a3;font-size:13px;line-height:1.45;font-weight:800}
+#homeLocAddress.show{display:block}
 </style></head><body><div id="withLangGate"><div class="langbox"><div>WELCOME TO KOREA</div><div class="langbrand">WITH</div><h2 class="langtitle">Choose your language</h2><p class="langsub">언어를 선택해 주세요</p><div class="langgrid"><button class="langchoice" data-lang="en">English</button><button class="langchoice" data-lang="ja">日本語</button><button class="langchoice" data-lang="zh-CN">简体中文</button><button class="langchoice" data-lang="zh-TW">繁體中文</button></div></div></div><button id="withLangChange" type="button">🌐 Language</button><div class="app">
 <div class="head"><div class="brandrow"><div class="brandcopy"><small>WELCOME TO KOREA</small><h1>WITH</h1><p>Your companion in Korea.</p></div><div class="mascot" aria-label="WITH mascot"><span class="mascot-bag"></span></div></div></div>
 
 <section id="home" class="content">
 <div class="home-location-card">
-  <div class="home-location-copy"><b>My location</b><span id="homeLocStatus">Set your current location once to use Find my way and Nearby places.</span></div>
+  <div class="home-location-copy"><b>My location</b><span id="homeLocStatus">Set your current location once to use Find my way and Nearby places.</span><div id="homeLocAddress"></div></div>
   <button class="secondary home-location-btn" onclick="saveHomeLocation()">◎ Save current location</button>
 </div><button class="banner route" onclick="go('route')"><span class="icon">🧭</span><h2>Find my way</h2><p>Open a real route to your destination.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop map">↗</i></span></button><button class="banner near" onclick="go('cats')"><span class="icon">📍</span><h2>Nearby places</h2><p>Find useful places around your current location.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop pin">⌖</i></span></button><button class="banner language" onclick="go('language')"><span class="icon">💬</span><h2>Translate to Korean</h2><p>Type what you want to say and translate it into Korean.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop talk">안녕</i></span></button><button class="banner emergency" onclick="go('emergency')"><span class="icon">🚨</span><h2>Emergency Help</h2><p>Police, ambulance and essential help in Korea.</p><span class="banner-mascot" aria-hidden="true"><i class="pose-prop phone">!</i></span></button></section>
 <section id="route" class="content" style="display:none"><button class="back" onclick="go('home')">← Back</button><div class="title">Find my way</div><div id="routeSavedStatus" class="locstatus">Starting from your saved location.</div><div style="height:14px"></div><div class="acwrap"><input id="dest" autocomplete="off" placeholder="Where do you want to go?"><div id="destSuggest" class="suggest"></div></div><button class="primary" onclick="route()">Open route</button><div id="routeout"></div></section>
@@ -554,6 +559,20 @@ window.WITH_applyLanguage=apply;
 <script id="with-saved-location-v1">
 (function(){
   function valid(p){return p && Number.isFinite(Number(p.lat)) && Number.isFinite(Number(p.lng));}
+  function setHomeState(type,msg,address){
+    const h=document.getElementById('homeLocStatus');
+    const a=document.getElementById('homeLocAddress');
+    if(h){
+      h.classList.remove('loc-ok','loc-error');
+      if(type==='ok')h.classList.add('loc-ok');
+      if(type==='error')h.classList.add('loc-error');
+      h.textContent=msg;
+    }
+    if(a){
+      if(address){a.textContent='📍 '+address;a.classList.add('show');}
+      else{a.textContent='';a.classList.remove('show');}
+    }
+  }
   function loadSaved(){
     try{
       const p=JSON.parse(localStorage.getItem('with_saved_location')||'null');
@@ -561,28 +580,61 @@ window.WITH_applyLanguage=apply;
     }catch(e){}
     return null;
   }
+  function savedAddress(){
+    try{return localStorage.getItem('with_saved_address')||'';}catch(e){return '';}
+  }
+  async function reverseAddress(p){
+    try{
+      const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+encodeURIComponent(p.lat)+'&lon='+encodeURIComponent(p.lng)+'&zoom=18&addressdetails=1&accept-language=en';
+      const r=await fetch(u,{headers:{'Accept':'application/json'}});
+      if(!r.ok)throw new Error('reverse geocode failed');
+      const j=await r.json();
+      return (j && j.display_name) ? j.display_name : '';
+    }catch(e){ return ''; }
+  }
   function updateLocationUI(){
-    const p=loadSaved(), h=document.getElementById('homeLocStatus'), r=document.getElementById('routeSavedStatus'), n=document.getElementById('nearLocStatus');
+    const p=loadSaved(), r=document.getElementById('routeSavedStatus'), n=document.getElementById('nearLocStatus');
     if(p){
-      if(h)h.textContent='✓ Current location saved. Find my way and Nearby places will use it automatically.';
+      setHomeState('ok','✓ Current location set successfully.',savedAddress() || ('Lat '+p.lat.toFixed(5)+' · Lng '+p.lng.toFixed(5)));
       if(r)r.textContent='✓ Starting from your saved current location.';
       if(n)n.textContent='✓ Searching around your saved current location.';
     }else{
-      if(h)h.textContent='Set your current location once to use Find my way and Nearby places.';
+      setHomeState(null,'Set your current location once to use Find my way and Nearby places.','');
       if(r)r.textContent='Save your current location on the home screen first.';
       if(n)n.textContent='Save your current location on the home screen first.';
     }
   }
+
   window.saveHomeLocation=function(){
     const el=document.getElementById('homeLocStatus');
-    requestGeo(el,function(pos){
-      if(valid(pos)){
-        currentPos={lat:Number(pos.lat),lng:Number(pos.lng)};
-        localStorage.setItem('with_saved_location',JSON.stringify(currentPos));
-        updateLocationUI();
+    if(el){el.classList.remove('loc-ok','loc-error');el.textContent='Finding your current location…';}
+    if(!window.isSecureContext || !navigator.geolocation){
+      setHomeState('error','✕ Failed to set location. Location access is unavailable.','');
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(async function(position){
+      const lat=position?.coords?.latitude, lng=position?.coords?.longitude;
+      if(!Number.isFinite(lat)||!Number.isFinite(lng)){
+        setHomeState('error','✕ Failed to set location. Please try again.',''); return;
       }
-    });
+      currentPos={lat:Number(lat),lng:Number(lng)};
+      localStorage.setItem('with_saved_location',JSON.stringify(currentPos));
+      const addr=await reverseAddress(currentPos);
+      if(addr)localStorage.setItem('with_saved_address',addr);
+      else localStorage.removeItem('with_saved_address');
+      setHomeState('ok','✓ Current location set successfully.',addr || ('Lat '+lat.toFixed(5)+' · Lng '+lng.toFixed(5)));
+      const r=document.getElementById('routeSavedStatus'), n=document.getElementById('nearLocStatus');
+      if(r)r.textContent='✓ Starting from your saved current location.';
+      if(n)n.textContent='✓ Searching around your saved current location.';
+    },function(error){
+      let m='✕ Failed to set location. Please try again.';
+      if(error?.code===1)m='✕ Location permission denied. Please allow location access and try again.';
+      else if(error?.code===2)m='✕ Could not determine your location. Turn on GPS and try again.';
+      else if(error?.code===3)m='✕ Location request timed out. Please try again.';
+      setHomeState('error',m,'');
+    },{enableHighAccuracy:true,timeout:20000,maximumAge:0});
   };
+
   window.route=function(){
     const input=document.getElementById('dest'), d=input.value.trim();
     if(!d){input.focus();return}
@@ -592,17 +644,23 @@ window.WITH_applyLanguage=apply;
     document.getElementById('routeout').innerHTML='<div class="summary"><b>Route ready</b><br><span>Saved location → '+d.replace(/[<>&]/g,'')+'</span></div><button class="primary" id="openSavedRoute">Open in Google Maps</button>';
     document.getElementById('openSavedRoute').onclick=()=>location.href=url;
   };
+
   window.places=function(q){
-    let p=null;
-    try{ p=JSON.parse(localStorage.getItem('with_saved_location')||'null'); }catch(e){}
+    const p=loadSaved();
     const status=document.getElementById('nearLocStatus');
-    if(!valid(p)){
-      if(status) status.textContent='Save your current location on the home screen first.';
+    if(!p){
+      if(status)status.textContent='Save your current location on the home screen first.';
       return;
     }
     const lat=Number(p.lat), lng=Number(p.lng);
-    if(status) status.textContent='✓ Searching around your saved current location.';
-    window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)+'&center='+encodeURIComponent(lat+','+lng),'_blank','noopener,noreferrer');
+    if(status)status.textContent='✓ Searching around your saved current location.';
+
+    // IMPORTANT: Google Maps URL API does not reliably honor a "center" parameter.
+    // Put the saved GPS coordinates directly into the search query AND viewport URL,
+    // so a previous Find-my-way destination cannot become Nearby's search origin.
+    const term=encodeURIComponent(q+' near '+lat+','+lng);
+    const url='https://www.google.com/maps/search/'+term+'/@'+lat+','+lng+',15z';
+    window.open(url,'_blank','noopener,noreferrer');
   };
 
   // Fast destination autocomplete: common Korean tourist destinations, stations and neighborhoods.
