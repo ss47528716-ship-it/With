@@ -371,6 +371,31 @@ body.with-modal-open{overflow:hidden!important;touch-action:none}
 #usefulCats .phrase-green-icon svg{width:28px;height:28px;stroke:#171917;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #usefulCats .phrase-card-label{display:block}
 </style>
+
+<style id="phrase-detail-page-style">
+#phraseDetailPage{
+ display:none;position:fixed;inset:0;z-index:9999;background:#f7f9f2;
+ overflow-y:auto;-webkit-overflow-scrolling:touch;padding:22px 18px 40px;
+}
+#phraseDetailPage.show{display:block}
+.phrase-detail-inner{max-width:720px;margin:0 auto}
+.phrase-detail-top{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.phrase-detail-back{
+ width:44px;height:44px;border:2px solid #171917;border-radius:50%;background:#fff;
+ font-size:23px;font-weight:900;line-height:1;flex:0 0 auto
+}
+#phraseDetailTitle{font-size:30px;font-weight:900;line-height:1.05;margin:0}
+#phraseDetailList .phrase-card{
+ background:#fff;border:2px solid #697065;border-radius:18px;padding:16px;
+ margin:11px 0;box-shadow:0 4px 0 rgba(75,82,73,.12)
+}
+#phraseDetailList .phrase-en{font-size:15px;opacity:.72;margin-bottom:7px}
+#phraseDetailList .phrase-ko{font-size:22px;font-weight:900;line-height:1.35}
+#phraseDetailList .phrase-speak{
+ margin-top:12px;border:2px solid #171917;border-radius:13px;background:#EAF9C9;
+ color:#171917;padding:10px 13px;font-weight:900
+}
+</style>
 </head><body><div id="withLangGate"><div class="langbox"><div>WELCOME TO KOREA</div><div class="langbrand">WITH</div><h2 class="langtitle">Choose your language</h2><p class="langsub">언어를 선택해 주세요</p><div class="langgrid"><button class="langchoice" data-lang="en">English</button><button class="langchoice" data-lang="ja">日本語</button><button class="langchoice" data-lang="zh-CN">简体中文</button><button class="langchoice" data-lang="zh-TW">繁體中文</button></div></div></div><button id="withLangChange" type="button">🌐 Language</button><div class="app">
 <div class="head"><div class="brandrow"><div class="brandcopy"><small>WELCOME TO KOREA</small><h1>WITH</h1><p>Your companion in Korea.</p></div><div class="mascot" aria-label="WITH mascot"><span class="mascot-bag"></span></div></div></div>
 
@@ -982,6 +1007,48 @@ function renderUsefulCategories(){
    b.append(ic,tx);b.onclick=()=>openPhraseCategory(k);box.appendChild(b);
  });
 }
+</script>
+
+
+<div id="phraseDetailPage" aria-hidden="true">
+ <div class="phrase-detail-inner">
+  <div class="phrase-detail-top">
+   <button class="phrase-detail-back" type="button" onclick="closePhraseDetailPage()">‹</button>
+   <h2 id="phraseDetailTitle"></h2>
+  </div>
+  <div id="phraseDetailList"></div>
+ </div>
+</div>
+
+
+<script id="phrase-detail-page-script">
+function openPhraseCategory(k){
+ const l=withLang(),ui=WITH_PHRASE_UI[l]||WITH_PHRASE_UI.en;
+ const page=document.getElementById('phraseDetailPage');
+ const title=document.getElementById('phraseDetailTitle');
+ const list=document.getElementById('phraseDetailList');
+ const raw=(WITH_CAT_I18N[k]&&WITH_CAT_I18N[k][l])||k;
+ title.textContent=String(raw).replace(/^[^\p{L}\p{N}]+/u,'').trim();
+ list.innerHTML='';
+ WITH_PHRASES[k].forEach(([en,ko])=>{
+   const c=document.createElement('div');c.className='phrase-card';
+   const e=document.createElement('div');e.className='phrase-en';e.textContent=localPhrase(en);
+   const q=document.createElement('div');q.className='phrase-ko';q.textContent=ko;
+   const b=document.createElement('button');b.className='phrase-speak';b.type='button';b.textContent=ui.play;
+   b.onclick=()=>speakUsefulKorean(ko);
+   c.append(e,q,b);list.appendChild(c);
+ });
+ page.classList.add('show');page.setAttribute('aria-hidden','false');
+ page.scrollTop=0;document.body.style.overflow='hidden';
+ history.pushState({withPhrase:true},'',location.href);
+}
+function closePhraseDetailPage(fromPop){
+ const page=document.getElementById('phraseDetailPage');if(!page)return;
+ page.classList.remove('show');page.setAttribute('aria-hidden','true');
+ document.body.style.overflow='';
+ if(!fromPop && history.state && history.state.withPhrase) history.back();
+}
+window.addEventListener('popstate',()=>closePhraseDetailPage(true));
 </script>
 
 </body></html>
