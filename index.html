@@ -646,21 +646,18 @@ window.WITH_applyLanguage=apply;
   };
 
   window.places=function(q){
-    const p=loadSaved();
+    let saved=null;
+    try{ saved=JSON.parse(localStorage.getItem('with_saved_location')||'null'); }catch(e){}
     const status=document.getElementById('nearLocStatus');
-    if(!p){
-      if(status)status.textContent='Save your current location on the home screen first.';
+    if(!saved || !Number.isFinite(Number(saved.lat)) || !Number.isFinite(Number(saved.lng))){
+      if(status) status.textContent='Save your current location on the home screen first.';
       return;
     }
-    const lat=Number(p.lat), lng=Number(p.lng);
-    if(status)status.textContent='✓ Searching around your saved current location.';
-
-    // IMPORTANT: Google Maps URL API does not reliably honor a "center" parameter.
-    // Put the saved GPS coordinates directly into the search query AND viewport URL,
-    // so a previous Find-my-way destination cannot become Nearby's search origin.
-    const term=encodeURIComponent(q+' near '+lat+','+lng);
-    const url='https://www.google.com/maps/search/'+term+'/@'+lat+','+lng+',15z';
-    window.open(url,'_blank','noopener,noreferrer');
+    const lat=Number(saved.lat), lng=Number(saved.lng);
+    const address=(localStorage.getItem('with_saved_address')||'').trim();
+    if(status) status.textContent='✓ Nearby 기준: '+(address || (lat.toFixed(5)+', '+lng.toFixed(5)));
+    const query=encodeURIComponent(q+' near '+lat+','+lng);
+    window.open('https://www.google.com/maps/search/?api=1&query='+query,'_blank','noopener,noreferrer');
   };
 
   // Fast destination autocomplete: common Korean tourist destinations, stations and neighborhoods.
