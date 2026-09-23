@@ -656,11 +656,13 @@ window.WITH_applyLanguage=apply;
     const lat=Number(saved.lat),lng=Number(saved.lng);
     const address=(localStorage.getItem('with_saved_address')||'').trim();
     if(status)status.textContent='✓ Nearby 기준: '+(address||lat.toFixed(5)+', '+lng.toFixed(5));
-    if(!address){
-      if(status)status.textContent='Location address is not ready. Please save your current location again.';
-      return;
-    }
-    const url='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q+' near '+address);
+
+    // Exact saved GPS is the viewport center. Category is ONLY the search term.
+    // Do not put coordinates/address into the text query: Google may geocode them
+    // as a different place and move the red result pin away from the user.
+    const term=encodeURIComponent(q);
+    const url='https://www.google.com/maps/search/'+term+'/@'+
+      lat.toFixed(7)+','+lng.toFixed(7)+',16z/data=!3m1!4b1';
     window.open(url,'_blank','noopener,noreferrer');
   };
 
